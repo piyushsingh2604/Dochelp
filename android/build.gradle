@@ -1,3 +1,15 @@
+dependencies {
+        classpath "com.android.tools.build:gradle:8.0.2" // Adjust based on your requirements
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0" // If using Kotlin
+        classpath 'com.google.gms:google-services:4.3.10' // Google services for Firebase
+    }
+    buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    }
+
 allprojects {
     repositories {
         google()
@@ -16,3 +28,5 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+ 
