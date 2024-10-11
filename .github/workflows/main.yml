@@ -45,7 +45,7 @@ jobs:
         with:
           appId: ${{ secrets.APPID }}
           serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          groups: doctest  # Use the correct group name
+          groups: doctest  # Use your actual group name
           file: build/app/outputs/apk/release/app-release.apk
 
       - name: Debug Info
@@ -53,7 +53,4 @@ jobs:
           echo "App ID: ${{ secrets.APPID }}"
           echo "Groups: doctest"
           echo "File path: build/app/outputs/apk/release/app-release.apk"
-          echo "Current Testers:"
-          curl -H "Authorization: Bearer ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" \
-               "https://firebaseappdistribution.googleapis.com/v1alpha1/apps/${{ secrets.APPID }}/testers"  # Check your API URL and format
           ls -l build/app/outputs/apk/release/app-release.apk  # Check if file exists
