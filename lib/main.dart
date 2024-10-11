@@ -23,13 +23,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
 // https://github.com/sunilvijayan7/GetDoctor
