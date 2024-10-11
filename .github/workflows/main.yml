@@ -47,3 +47,10 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           groups: All testers
           file: build/app/outputs/apk/release/app-release.apk
+
+      - name: Debug Info
+        run: |
+          echo "App ID: ${{ secrets.APPID }}"
+          echo "Groups: All testers"
+          echo "File path: build/app/outputs/apk/release/app-release.apk"
+          ls -l build/app/outputs/apk/release/app-release.apk  # Check if file exists
