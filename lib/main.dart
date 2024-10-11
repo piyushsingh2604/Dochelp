@@ -23,5 +23,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class app extends StatefulWidget {
+  const app({super.key});
 
+  @override
+  State<app> createState() => _appState();
+}
+
+class _appState extends State<app> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
 // https://github.com/sunilvijayan7/GetDoctor
