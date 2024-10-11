@@ -1,8 +1,8 @@
-import 'package:dochelp/UI/Screens/Widgets/BottomBar.dart';
+import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
