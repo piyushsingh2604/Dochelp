@@ -1,4 +1,4 @@
-name: Distribute to Testers
+name: Build & upload to Firebase App Distribution
 
 on:
   push:
@@ -6,32 +6,51 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
+      - uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Decode google-services.json
+        env: 
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+        
+      - name: Decode firebase_option
+        env:
+          firebase_options_dart: ${{ secrets.FIREBASE_OPTION }}
+        run: echo "$firebase_options_dart" > lib/firebase_options.dart
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - run: flutter pub get
+      - run: flutter clean  # Optional: Clean the build directory
+      - run: flutter build apk --release --verbose
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
       
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.10.1'  # Replace with your Flutter version
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Upload to Firebase App Distribution
+      - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.APPID }}
           serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          groups: doctest  # Your actual group name
+          groups: All testers
           file: build/app/outputs/apk/release/app-release.apk
+
+      - name: Debug Info
+        run: |
+          echo "App ID: ${{ secrets.APPID }}"
+          echo "Groups: All testers"
+          echo "File path: build/app/outputs/apk/release/app-release.apk"
+          ls -l build/app/outputs/apk/release/app-release.apk  # Check if file exists
