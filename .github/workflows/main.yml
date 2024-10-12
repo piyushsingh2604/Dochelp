@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: "zulu"
-          java-version: "17"  # Updated to Java 17
+          java-version: "17"
 
       - name: Decode google-services.json
         env: 
@@ -33,7 +33,7 @@ jobs:
 
       - run: flutter pub get
       - run: flutter clean  # Optional: Clean the build directory
-      - run: flutter build apk --release --verbose  # Enable verbose logging
+      - run: flutter build apk --release --verbose
 
       - uses: actions/upload-artifact@v3
         with:
@@ -44,6 +44,13 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.APPID }}
-          token: ${{ secrets.TOKEN }}
-          groups: All testers
+          serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          groups: doctest  # Use your actual group name
           file: build/app/outputs/apk/release/app-release.apk
+
+      - name: Debug Info
+        run: |
+          echo "App ID: ${{ secrets.APPID }}"
+          echo "Groups: doctest"
+          echo "File path: build/app/outputs/apk/release/app-release.apk"
+          ls -l build/app/outputs/apk/release/app-release.apk  # Check if file exists
