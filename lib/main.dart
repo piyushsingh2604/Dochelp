@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dochelp/UI/Screens/HomeScreen.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/firebase_options.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SwiperWidget(),
+      home: HomeScreen(),
     );
   }
 }
