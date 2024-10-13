@@ -16,7 +16,8 @@ class _SwiperWidgetState extends State<SwiperWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
+          backgroundColor: Colors.transparent,
+
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('doctor').snapshots(),
         builder: (context, snapshot) {

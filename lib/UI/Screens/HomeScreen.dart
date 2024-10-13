@@ -14,12 +14,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(39, 248, 187, 208),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
-image: DecorationImage(image: NetworkImage('https://images.squarespace-cdn.com/content/v1/62aa54b835cf5b707ba3e9ea/77c35019-54d0-4b21-894b-6ad81c040a1c/Ink-Background-Teal.png'),fit: BoxFit.cover)            ),
+image: DecorationImage(image: NetworkImage('https://static.wixstatic.com/media/28a571_b921a6a84b5f4782b75ee172829cec53~mv2.png/v1/crop/x_0,y_2,w_1685,h_2996/fill/w_242,h_416,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/hiclipart_edited.png'),fit: BoxFit.cover)            ),
             height: 280,
             width: MediaQuery.of(context).size.width,
             child: Stack(
