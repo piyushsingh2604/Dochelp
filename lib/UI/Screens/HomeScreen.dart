@@ -14,7 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(39, 248, 187, 208),
+            backgroundColor: Colors.grey[50],
+
+     // backgroundColor: Colors.pink[50],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -141,8 +143,16 @@ Gap(1),
             height: 188,
             child: SwiperWidget(),
           ),
-          Text("data")
-        ],
+  Padding(
+            padding: const EdgeInsets.only(left: 20,top: 15,right: 20),
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Popular Salons",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),),
+             TextButton(onPressed: (){}, child: Text("See All",style: TextStyle(),))
+              ],
+            ),
+          ),        ],
       ),
     );
   }
