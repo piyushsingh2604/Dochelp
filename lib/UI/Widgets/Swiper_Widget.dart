@@ -40,7 +40,7 @@ class _SwiperWidgetState extends State<SwiperWidget> {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                         image: NetworkImage(
-                            'https://static.vecteezy.com/system/resources/previews/013/129/498/non_2x/soft-blue-gradients-color-background-modern-screen-design-for-mobile-app-web-infographic-brochure-free-vector.jpg'),
+                            'https://t4.ftcdn.net/jpg/03/41/16/09/360_F_341160981_CFBrQpnDWWuMZqTpDPvOkHcdZeEikeXm.jpg'),
                         fit: BoxFit.cover)),
                 child: Stack(
                   children: [
