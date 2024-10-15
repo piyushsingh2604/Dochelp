@@ -15,9 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-
-      // backgroundColor: Colors.pink[50],
+      backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://static.wixstatic.com/media/28a571_b921a6a84b5f4782b75ee172829cec53~mv2.png/v1/crop/x_0,y_2,w_1685,h_2996/fill/w_242,h_416,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/hiclipart_edited.png'),
+                          'https://static.vecteezy.com/system/resources/thumbnails/012/594/316/small_2x/turqoise-abstract-background-for-creative-business-bifold-brochure-template-png.png'),
                       fit: BoxFit.cover)),
               height: 280,
               width: MediaQuery.of(context).size.width,
@@ -151,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Gap(0),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 180 ,
+              height: 189 ,
               child: SwiperWidget(),
             ),
             Padding(
