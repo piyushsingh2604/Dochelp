@@ -1,6 +1,7 @@
 import 'package:dochelp/UI/Widgets/Category_Widget.dart';
 import 'package:dochelp/UI/Widgets/Popular_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
+import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor:Color(0xFFF7F8F9),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             height: 500,
             width: MediaQuery.of(context).size.width,
-            child: PopularWidget(),
+            child: TopworkesWidget(),
           ),
         )
           ],
