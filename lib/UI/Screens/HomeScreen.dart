@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
              
-              height: 415,
+              height: 410,
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
         Padding(
-          padding: const EdgeInsets.only(left: 20,right: 20,top: 10),
+          padding: const EdgeInsets.only(left: 20,right: 20,top: 3),
           child: Container(
             height: 500,
             width: MediaQuery.of(context).size.width,
