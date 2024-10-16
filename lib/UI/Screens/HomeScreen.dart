@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
              
-              height: 260,
+              height: 415,
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 110,
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20, bottom: 8),
+                        padding: const EdgeInsets.only(left: 20, bottom: 10),
                         child: Container(
                           width: 200,
                           child: TextField(
@@ -103,8 +103,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Positioned(
+                    top: 170,
+                    left: 20,
+                    right: 20,
+                    child: Container(
+                      height: 140,
+                      width: MediaQuery.of(context).size.width,
+                      child: SliderWidget(),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
                       left: 20,
-                      top: 175,
+                      top: 330,
                       child: Container(
                           height: 73,
                           width: MediaQuery.of(context).size.width,
@@ -119,11 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Popular Salons",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
+                    "Top Salons",
+                    style: GoogleFonts.notoSansGurmukhi(fontSize: 19,fontWeight: FontWeight.w600),
+                    // style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontWeight: FontWeight.w600,
+                    //     fontSize: 18),
                   ),
                   TextButton(
                       onPressed: () {},
