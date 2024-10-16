@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
-  //final String uid;
-  // CategoryWidget({required this.uid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,28 +11,22 @@ class CategoryWidget extends StatelessWidget {
       body: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          _buildSpecialistContainer(context, 'Cardiologist',
-              'https://gentem.com/wp-content/uploads/2022/07/cardiology-cheat-sheet-blog-graphic.png'),
+          _buildSpecialistContainer(context, 'Salon', Icons.self_improvement_rounded),
           Gap(10),
-          _buildSpecialistContainer(context, 'Dentist',
-              'https://static.vecteezy.com/system/resources/thumbnails/018/245/406/small_2x/icon-with-dentist-s-tools-and-a-blue-shield-png.png'),
+          _buildSpecialistContainer(context, 'Workes', Icons.person),
           Gap(10),
-          _buildSpecialistContainer(context, 'Eye Specialist',
-              'https://cdn-icons-png.flaticon.com/512/5717/5717736.png'),
+          _buildSpecialistContainer(context, 'Hair Dresser', Icons.person_search_rounded),
           Gap(10),
-          _buildSpecialistContainer(context, 'Allergist',
-              'https://cdn-icons-png.flaticon.com/512/2248/2248412.png'),
+          _buildSpecialistContainer(context, 'Spa', Icons.shower),
           Gap(10),
-          _buildSpecialistContainer(context, 'Orthopaedist',
-              'https://i0.wp.com/griportho.com/wp-content/uploads/2021/11/GRIPORTHO-SYMBOL.png'),
+          _buildSpecialistContainer(context, 'Nails', Icons.airline_seat_legroom_reduced_rounded),
           Gap(10),
         ],
       ),
     );
   }
 
-  Widget _buildSpecialistContainer(
-      BuildContext context, String profession, String imageUrl) {
+  Widget _buildSpecialistContainer(BuildContext context, String profession, IconData icon) {
     return GestureDetector(
       onTap: () {
         // Navigator.push(
@@ -43,67 +34,55 @@ class CategoryWidget extends StatelessWidget {
         //   MaterialPageRoute(
         //     builder: (context) => DoctorListScreen(
         //       profession: profession,
-        //       uid: uid,
         //     ),
         //   ),
         // );
       },
       child: Container(
+        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 9),
               child: Container(
+                height: 35,
+                width: 30,
+               
                 child: Center(
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.network(imageUrl, fit: BoxFit.cover),
+                  child: Icon(
+                    icon,
+                    size: 27,
+                    color: Color(0xFF2C41FF),
                   ),
-                ),
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  color:Colors.white,
-                  borderRadius: BorderRadius.circular(60),
                 ),
               ),
             ),
-            Gap(5),
+            Gap(3),
             Text(
               profession,
-              style: TextStyle(
-                  color: const Color.fromARGB(202, 0, 0, 0),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w100),
-            )
+                                      style: GoogleFonts.roboto(fontSize: 9,fontWeight: FontWeight.w400),
+
+              // style: TextStyle(
+              //   color: const Color.fromARGB(202, 0, 0, 0),
+              //   fontSize: 10,
+              //   fontWeight: FontWeight.w100,
+              // ),
+            ),
           ],
         ),
-        height: 100,
-        width: 80,
+        height: 73,
+        width: 72,
         decoration: BoxDecoration(
-            color: _getColorForProfession(profession),
-            borderRadius: BorderRadius.circular(15)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+        ),
       ),
     );
   }
 
   Color _getColorForProfession(String profession) {
-    switch (profession.toLowerCase()) {
-      case 'cardiologist':
-        return Colors.transparent;
-      case 'dentist':
-        return Colors.transparent;
-      case 'eye specialist':
-        return Colors.transparent;
-      case 'allergist':
-        return Colors.transparent;
-      case 'orthopaedist':
-        return Colors.transparent;
-      default:
-        return Colors.transparent;
-    }
+    return Colors.transparent; // All professions return transparent
   }
 }
 
@@ -111,15 +90,18 @@ class DoctorListScreen extends StatelessWidget {
   final String profession;
   final String uid;
 
-  const DoctorListScreen(
-      {super.key, required this.profession, required this.uid});
+  const DoctorListScreen({
+    super.key,
+    required this.profession,
+    required this.uid,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          // title: Text('$profession Doctors'),
-          ),
+        // title: Text('$profession Doctors'),
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Users').snapshots(),
         builder: (context, snapshot) {
@@ -143,16 +125,15 @@ class DoctorListScreen extends StatelessWidget {
               var data = user.data();
               return ListTile(
                 title: Text(data['name'] ?? ''),
-                // subtitle: Text(data['profession'] ?? ''),
                 onTap: () {
                   // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => Aboutscreen(
-                  //         userid: userid,
-                  //         currentid: uid,
-                  //       ),
-                  //     ));
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => Aboutscreen(
+                  //       userid: userid,
+                  //       currentid: uid,
+                  //     ),
+                  //   ));
                 },
               );
             },
