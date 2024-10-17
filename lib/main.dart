@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/UI/Screens/HomeScreen.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
@@ -31,9 +32,12 @@ class MyApp extends StatelessWidget {
 
 
 
+
 // https://dribbble.com/shots/17886683-Medical-Mobile-App-Design-Case-Study
 // https://github.com/sunilvijayan7/GetDoctor
 // appointment
 // https://dribbble.com/shots/20688641-Telemedicine-Mobile-App
-//home
-// https://dribbble.com/shots/22701244-Doctor-App
+//Profile
+// https://cdn.dribbble.com/users/7180606/screenshots/19696717/media/c9f10fb6c2b56624aa9f0f000a45b707.jpg?resize=1600x1200&vertical=center
+// edit profile 
+// https://cdn.dribbble.com/users/1346977/screenshots/5771597/media/f8d6a31f723a132ef0131b6879f4530c.png?resize=800x600&vertical=center

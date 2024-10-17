@@ -2,9 +2,9 @@ import 'package:dochelp/UI/Widgets/Category_Widget.dart';
 import 'package:dochelp/UI/Widgets/Popular_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
+import 'package:dochelp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,13 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Color(0xFFF7F8F9),
+      backgroundColor: Color(0xFFF7F8F9),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-             
               height: 410,
               width: MediaQuery.of(context).size.width,
               child: Stack(
@@ -33,7 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       left: 20,
                       child: Text(
                         "Keep Healthy!",
-                        style: GoogleFonts.roboto(fontSize: 25,fontWeight: FontWeight.w600),
+                        style: GoogleFonts.roboto(
+                            fontSize: 25, fontWeight: FontWeight.w600),
                         // TextStyle(
                         //     fontSize: 19,
                         //     fontWeight: FontWeight.w600,
@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       left: 20,
                       child: Text(
                         "Morning Janna",
-                                              style: GoogleFonts.roboto(fontSize: 14,fontWeight: FontWeight.w300),
+                        style: GoogleFonts.roboto(
+                            fontSize: 14, fontWeight: FontWeight.w300),
 
                         //  TextStyle(
                         //     fontSize: 14,
@@ -55,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 30,
                     right: 20,
                     child: Container(
-                    
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 110,
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20, bottom: 10),
+                        padding: const EdgeInsets.only(left: 20, top: 20),
                         child: Container(
                           width: 200,
                           child: TextField(
@@ -85,9 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             cursorHeight: 16,
                             decoration: InputDecoration(
-                              
                               hintText: 'Search Salon or anything',
-                              hintStyle: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.w300),
+                              hintStyle: GoogleFonts.poppins(
+                                  fontSize: 12, fontWeight: FontWeight.w300),
                               // TextStyle(
                               //     color: Colors.grey,
                               //     fontWeight: FontWeight.w100),
@@ -108,13 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     left: 20,
                     right: 20,
                     child: Container(
-                      height: 140,
+                      height: 145,
                       width: MediaQuery.of(context).size.width,
-                      child: SliderWidget(),
+                      child: Slider_Widget(),
                     ),
                   ),
                   Positioned(
-                    right: 10,
+                      right: 10,
                       left: 20,
                       top: 330,
                       child: Container(
@@ -124,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-       
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 1, right: 10),
               child: Row(
@@ -132,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     "Top Salons",
-                    style: GoogleFonts.notoSansGurmukhi(fontSize: 19,fontWeight: FontWeight.w600),
+                    style: GoogleFonts.notoSansGurmukhi(
+                        fontSize: 19, fontWeight: FontWeight.w600),
                     // style: TextStyle(
                     //     color: Colors.black,
                     //     fontWeight: FontWeight.w600,
@@ -143,20 +143,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         "See All",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF2C41FF),),
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF2C41FF),
+                        ),
                       ))
                 ],
               ),
             ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20,right: 20,top: 3),
-          child: Container(
-            height: 500,
-            width: MediaQuery.of(context).size.width,
-            child: TopworkesWidget(),
-          ),
-        )
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 3),
+              child: Container(
+                height: 500,
+                width: MediaQuery.of(context).size.width,
+                child: TopworkesWidget(),
+              ),
+            )
           ],
         ),
       ),

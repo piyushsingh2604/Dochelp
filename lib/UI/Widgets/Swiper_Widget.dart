@@ -164,22 +164,85 @@
 
 
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class SliderWidget extends StatelessWidget {
-  const SliderWidget({super.key});
+
+class Slider_Widget extends StatefulWidget {
+  const Slider_Widget({super.key});
+
+  @override
+  State<Slider_Widget> createState() => _Slider_WidgetState();
+}
+
+class _Slider_WidgetState extends State<Slider_Widget> {
+  int outerCurrentPage = 0;
+  PageController _pageController = PageController();
+
+  // List of colors to display in the outer banner slider
+  final List<Color> outerStyleColors = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.orange,
+    Colors.purple,
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(20)
-        ),
-        height: 150,
-        width: MediaQuery.of(context).size.width,
+      body: Column(
+        children: [
+          _outerBannerSlider(),
+        ],
       ),
+    );
+  }
+
+  /// Outer Style Indicators Banner Slider
+  Widget _outerBannerSlider() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 1,right: 1),
+          child: SizedBox(
+            width: double.infinity,
+            height: 145, // Set the height of the CarouselSlider here
+            child: CarouselSlider(
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: true,
+                aspectRatio: 16 / 8,
+                viewportFraction: .99,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    outerCurrentPage = index;
+                  });
+                },
+              ),
+          
+              /// Items with color containers
+              items: outerStyleColors.map((color) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 145, // Set the height of the container here
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+
+        /// Indicators for the slider
+      ],
     );
   }
 }
