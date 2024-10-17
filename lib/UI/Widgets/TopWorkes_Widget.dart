@@ -44,7 +44,7 @@ class TopworkesWidget extends StatelessWidget {
                         Container(
                           height: 15,
                           width: 15,
-                          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://png.pngtree.com/png-vector/20230525/ourmid/pngtree-glossy-yellow-star-hd-image-vector-png-image_7108442.png'))),
+                          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/pngtree-glossy-yellow-star-hd-image-vector-png-image_7108442.png'),fit: BoxFit.cover)),
                         ),
                                   Gap(4),
                                   Text(

@@ -70,11 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 110,
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 1),
+                        padding: const EdgeInsets.only(left: 20, bottom: 16),
                         child: Container(
                           width: 200,
                           child: TextField(
-                            readOnly: true,
+                           // readOnly: true,
                             onTap: () {
                               // Navigator.push(
                               //     context,

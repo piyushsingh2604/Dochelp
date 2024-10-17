@@ -23,7 +23,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xFFF7F8F9),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
