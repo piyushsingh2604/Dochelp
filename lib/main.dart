@@ -1,5 +1,6 @@
 
 import 'package:dochelp/UI/Screens/ProfileScreen.dart';
+import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:dochelp/Worker/Appointment.dart';
 import 'package:dochelp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
