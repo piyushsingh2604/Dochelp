@@ -1,4 +1,5 @@
 import 'package:dochelp/UI/Screens/HomeScreen.dart';
+import 'package:dochelp/UI/Screens/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
@@ -34,8 +35,8 @@ class _BottomBarState extends State<BottomBar> {
         children: [
           HomeScreen(),
           Center(child: Text('Page 2')),
-          Center(child: Text('Page 3')),
-        ],
+           Profilescreen(),
+             ],
       ),
       bottomNavigationBar: AnimatedNotchBottomBar(
         notchBottomBarController: _notchBottomBarController,
@@ -47,7 +48,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             activeItem: Icon(
               Icons.home_filled,
-              color: Colors.blueAccent,
+              color:Color(0xFF2C41FF),
             ),
             itemLabel: 'Home',
           ),
@@ -58,20 +59,20 @@ class _BottomBarState extends State<BottomBar> {
             ),
             activeItem: Icon(
               Icons.star,
-              color: Colors.blueAccent,
+              color:Color(0xFF2C41FF),
             ),
             itemLabel: 'Favorites',
           ),
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.settings,
+              Icons.person,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
-              Icons.settings,
-              color: Colors.blueAccent,
+              Icons.person,
+              color:Color(0xFF2C41FF),
             ),
-            itemLabel: 'Settings',
+            itemLabel: 'Profile',
           ),
         ],
         onTap: _onTap,
