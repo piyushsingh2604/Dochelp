@@ -1,3 +1,5 @@
+import 'package:dochelp/UI/Screens/AppointmentScreen.dart';
+import 'package:dochelp/UI/Screens/Fav_Screen.dart';
 import 'package:dochelp/UI/Screens/HomeScreen.dart';
 import 'package:dochelp/UI/Screens/ProfileScreen.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,8 @@ class _BottomBarState extends State<BottomBar> {
         },
         children: [
           HomeScreen(),
-          Center(child: Text('Page 2')),
+          FavScreen(),
+          Appointmentscreen(),
            Profilescreen(),
              ],
       ),
@@ -43,7 +46,7 @@ class _BottomBarState extends State<BottomBar> {
         bottomBarItems: [
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.home_filled,
+              Icons.home_outlined,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
@@ -54,18 +57,29 @@ class _BottomBarState extends State<BottomBar> {
           ),
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.star,
+              Icons.favorite_border,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
-              Icons.star,
+              Icons.favorite,
               color:Color(0xFF2C41FF),
             ),
             itemLabel: 'Favorites',
           ),
+            BottomBarItem(
+            inActiveItem: Icon(
+              Icons.calendar_month_outlined,
+              color: Colors.blueGrey,
+            ),
+            activeItem: Icon(
+              Icons.calendar_month,
+              color:Color(0xFF2C41FF),
+            ),
+            itemLabel: 'Appointment',
+          ),
           BottomBarItem(
             inActiveItem: Icon(
-              Icons.person,
+              Icons.person_outline_sharp,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
