@@ -13,7 +13,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Container(
+      body: SizedBox(
         height: 170,
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -21,6 +21,10 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
           children: [
             Text("Today",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.w600),),
               Container(
+                          height: 165,
+                          width: 210,
+                          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(15)),
                           child: Stack(
                             children: [
               Positioned(
@@ -46,6 +50,9 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
               Positioned(
                 top: 65,
                 child: Container(
+                  height: 30,
+                  width: MediaQuery.of(context).size.width,
+                  color: const Color.fromARGB(16, 158, 158, 158),
                   child: Center(
                     child: Row(
                       children: [
@@ -53,7 +60,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                           padding: const EdgeInsets.only(
                             left: 15,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: 20,
                             width: 95,
                             child: Row(
@@ -79,7 +86,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                           padding: const EdgeInsets.only(
                             left: 6,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: 20,
                             width: 95,
                             child: Row(
@@ -104,9 +111,6 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                       ],
                     ),
                   ),
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color.fromARGB(16, 158, 158, 158),
                 ),
               ),
               Positioned(
@@ -115,6 +119,13 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                 child: Row(
                   children: [
                     Container(
+                      height: 35,
+                      width: 75,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color:
+                                  const Color.fromARGB(85, 158, 158, 158)),
+                          borderRadius: BorderRadius.circular(5)),
                       child: Center(
                         child: Text(
                           "Cancel",
@@ -125,23 +136,16 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                                   const Color.fromARGB(212, 158, 158, 158)),
                         ),
                       ),
-                      height: 35,
-                      width: 75,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                                  const Color.fromARGB(85, 158, 158, 158)),
-                          borderRadius: BorderRadius.circular(5)),
                     ),
                     Gap(5),
                     Container(
-                      child: Center(
-                        child: Text("Call",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
-                      ),
                       height: 35,
                       width: 97,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(32, 158, 158, 158),borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Center(
+                        child: Text("Call",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
                       ),
                     )
                   ],
@@ -161,10 +165,6 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
               )
                             ],
                           ),
-                          height: 165,
-                          width: 210,
-                          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(15)),
                         )
           ],
         ),

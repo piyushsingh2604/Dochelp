@@ -177,7 +177,7 @@ class Slider_Widget extends StatefulWidget {
 
 class _Slider_WidgetState extends State<Slider_Widget> {
   int outerCurrentPage = 0;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   // List of colors to display in the outer banner slider
   final List<Color> outerStyleColors = [

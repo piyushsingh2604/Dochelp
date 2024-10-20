@@ -3,12 +3,18 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FavWidget extends StatelessWidget {
+  const FavWidget({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 100,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(19), color: Colors.white),
         child: Stack(
           children: [
             Positioned(
@@ -99,10 +105,6 @@ class FavWidget extends StatelessWidget {
                 ))
           ],
         ),
-        width: MediaQuery.of(context).size.width,
-        height: 100,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(19), color: Colors.white),
       ),
     );
   }

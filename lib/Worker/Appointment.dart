@@ -17,7 +17,7 @@ class _AppointmentState extends State<Appointment> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        Container(
+        SizedBox(
           height: 170,
           width: MediaQuery.of(context).size.width,
           child: Stack(
@@ -29,6 +29,10 @@ class _AppointmentState extends State<Appointment> {
                 Positioned(
                   left: 100,
                   child: Container(
+                              height: 165,
+                              width: 210,
+                              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
                               child: Stack(
                                 children: [
                   Positioned(
@@ -54,6 +58,9 @@ class _AppointmentState extends State<Appointment> {
                   Positioned(
                     top: 65,
                     child: Container(
+                      height: 30,
+                      width: MediaQuery.of(context).size.width,
+                      color: const Color.fromARGB(16, 158, 158, 158),
                       child: Center(
                         child: Row(
                           children: [
@@ -61,7 +68,7 @@ class _AppointmentState extends State<Appointment> {
                               padding: const EdgeInsets.only(
                                 left: 15,
                               ),
-                              child: Container(
+                              child: SizedBox(
                                 height: 20,
                                 width: 95,
                                 child: Row(
@@ -87,7 +94,7 @@ class _AppointmentState extends State<Appointment> {
                               padding: const EdgeInsets.only(
                                 left: 6,
                               ),
-                              child: Container(
+                              child: SizedBox(
                                 height: 20,
                                 width: 95,
                                 child: Row(
@@ -112,9 +119,6 @@ class _AppointmentState extends State<Appointment> {
                           ],
                         ),
                       ),
-                      height: 30,
-                      width: MediaQuery.of(context).size.width,
-                      color: const Color.fromARGB(16, 158, 158, 158),
                     ),
                   ),
                   Positioned(
@@ -125,6 +129,13 @@ class _AppointmentState extends State<Appointment> {
                         InkWell(
                           onTap: (){},
                           child: Container(
+                            height: 35,
+                            width: 75,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(85, 158, 158, 158)),
+                                borderRadius: BorderRadius.circular(5)),
                             child: Center(
                               child: Text(
                                 "Cancel",
@@ -135,26 +146,19 @@ class _AppointmentState extends State<Appointment> {
                                         const Color.fromARGB(212, 158, 158, 158)),
                               ),
                             ),
-                            height: 35,
-                            width: 75,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color:
-                                        const Color.fromARGB(85, 158, 158, 158)),
-                                borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
                         Gap(5),
                         InkWell(
                           onTap: (){},
                           child: Container(
-                            child: Center(
-                              child: Text("Accept",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
-                            ),
                             height: 35,
                             width: 97,
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(32, 158, 158, 158),borderRadius: BorderRadius.circular(5)
+                            ),
+                            child: Center(
+                              child: Text("Accept",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
                             ),
                           ),
                         )
@@ -175,10 +179,6 @@ class _AppointmentState extends State<Appointment> {
                   )
                                 ],
                               ),
-                              height: 165,
-                              width: 210,
-                              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
                             ),
                 )
             ],

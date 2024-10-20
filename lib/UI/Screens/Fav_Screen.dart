@@ -1,7 +1,5 @@
-import 'package:dochelp/UI/Widgets/Appointment_Widget.dart';
 import 'package:dochelp/UI/Widgets/Fav_Widget.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class FavScreen extends StatefulWidget {
   const FavScreen({super.key});
@@ -35,7 +33,7 @@ class _FavScreenState extends State<FavScreen> {
         
         Padding(
           padding: const EdgeInsets.only(left: 20,right: 20,top: 20),
-          child: Container(
+          child: SizedBox(
             height: 900,
             width: MediaQuery.of(context).size.width,
             child: FavWidget()),

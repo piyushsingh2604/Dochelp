@@ -1,8 +1,6 @@
 import 'package:dochelp/UI/Widgets/Category_Widget.dart';
-import 'package:dochelp/UI/Widgets/Fav_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
-import 'package:dochelp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: 410,
               width: MediaQuery.of(context).size.width,
               child: Stack(
@@ -69,9 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     right: 20,
                     top: 110,
                     child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(223, 255, 255, 255)),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, bottom: 16),
-                        child: Container(
+                        child: SizedBox(
                           width: 200,
                           child: TextField(
                            // readOnly: true,
@@ -96,18 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color.fromARGB(223, 255, 255, 255)),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
                     ),
                   ),
                   Positioned(
                     top: 170,
                     left: 20,
                     right: 20,
-                    child: Container(
+                    child: SizedBox(
                       height: 145,
                       width: MediaQuery.of(context).size.width,
                       child: Slider_Widget(),
@@ -117,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       right: 10,
                       left: 20,
                       top: 330,
-                      child: Container(
+                      child: SizedBox(
                           height: 73,
                           width: MediaQuery.of(context).size.width,
                           child: CategoryWidget()))
@@ -152,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 3),
-              child: Container(
+              child: SizedBox(
                 height: 500,
                 width: MediaQuery.of(context).size.width,
                 child: TopworkesWidget(),

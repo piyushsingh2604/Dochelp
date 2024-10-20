@@ -4,6 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
+  const CategoryWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,12 +42,19 @@ class CategoryWidget extends StatelessWidget {
       },
       child: Container(
         
+        height: 73,
+        width: 72,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 9),
-              child: Container(
+              child: SizedBox(
                 height: 35,
                 width: 30,
                
@@ -70,12 +79,6 @@ class CategoryWidget extends StatelessWidget {
               // ),
             ),
           ],
-        ),
-        height: 73,
-        width: 72,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(22),
         ),
       ),
     );

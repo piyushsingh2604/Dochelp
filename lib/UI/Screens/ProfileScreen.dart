@@ -93,7 +93,7 @@ class _ProfilescreenState extends State<Profilescreen> {
               ),
             ),
             Gap(20),
-            Container(
+            SizedBox(
               height: 100,
               width: 110,
               child: Stack(
@@ -153,7 +153,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 200,
                         child: Row(
                           children: [
@@ -207,10 +207,18 @@ class _ProfilescreenState extends State<Profilescreen> {
                                         padding: const EdgeInsets.only(
                                             left: 20, right: 20, top: 20),
                                         child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: const Color.fromARGB(
+                                                  223, 255, 255, 255)),
+                                          height: 45,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 20, bottom: 16),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: 200,
                                               child: TextField(
                                                 controller: name,
@@ -227,14 +235,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                                               ),
                                             ),
                                           ),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: const Color.fromARGB(
-                                                  223, 255, 255, 255)),
-                                          height: 45,
-                                          width:
-                                              MediaQuery.of(context).size.width,
                                         ),
                                       ),
                                       Visibility(
@@ -270,15 +270,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                                             }
                                           },
                                           child: Container(
-                                            child: Center(
-                                              child: Text(
-                                                "UPDATE",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 16),
-                                              ),
-                                            ),
                                             height: 42,
                                             width: MediaQuery.of(context)
                                                 .size
@@ -287,6 +278,15 @@ class _ProfilescreenState extends State<Profilescreen> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: Color(0xFF2C41FF),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "UPDATE",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -317,7 +317,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                     borderRadius: BorderRadius.circular(8)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Container(
+                  child: SizedBox(
                     width: 250,
                     child: Row(
                       children: [
@@ -353,7 +353,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 250,
                         child: Row(
                           children: [
@@ -430,10 +430,19 @@ class _ProfilescreenState extends State<Profilescreen> {
                                             padding: const EdgeInsets.only(
                                                 left: 20, right: 20, top: 20),
                                             child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: const Color.fromARGB(
+                                                      223, 255, 255, 255)),
+                                              height: 45,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 20, bottom: 16),
-                                                child: Container(
+                                                child: SizedBox(
                                                   width: 200,
                                                   child: TextField(                  focusNode: focusNode,
 
@@ -453,15 +462,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                                                   ),
                                                 ),
                                               ),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: const Color.fromARGB(
-                                                      223, 255, 255, 255)),
-                                              height: 45,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
                                             ),
                                           );
                                         },
@@ -483,15 +483,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                                             }
                                           },
                                           child: Container(
-                                            child: Center(
-                                              child: Text(
-                                                "UPDATE",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 16),
-                                              ),
-                                            ),
                                             height: 42,
                                             width: MediaQuery.of(context)
                                                 .size
@@ -500,6 +491,15 @@ class _ProfilescreenState extends State<Profilescreen> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: Color(0xFF2C41FF),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "UPDATE",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -533,7 +533,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 250,
                         child: Row(
                           children: [
@@ -575,7 +575,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                     borderRadius: BorderRadius.circular(8)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Container(
+                  child: SizedBox(
                     width: 250,
                     child: Row(
                       children: [

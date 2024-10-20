@@ -1,6 +1,5 @@
 import 'package:dochelp/UI/Widgets/Appointment_Widget.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class Appointmentscreen extends StatefulWidget {
   const Appointmentscreen({super.key});
@@ -33,7 +32,7 @@ class _AppointmentscreenState extends State<Appointmentscreen> {
         
         Padding(
           padding: const EdgeInsets.only(left: 20,right: 20,top: 20),
-          child: Container(
+          child: SizedBox(
             height: 900,
             width: MediaQuery.of(context).size.width,
             child: AppointmentWidget()),

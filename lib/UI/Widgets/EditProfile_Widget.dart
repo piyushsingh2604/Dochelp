@@ -21,7 +21,7 @@ class EditprofileWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: 120,
                   width: 125,
                   child: Stack(
@@ -38,14 +38,14 @@ class EditprofileWidget extends StatelessWidget {
                         child: InkWell(
                           onTap: (){},
                           child: Container(
-                            child: Center(
-                              child: Icon(Icons.camera_alt_outlined,color: Colors.white,size: 16,),
-                            ),
                             height: 30,
                             width: 30,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(55),
                               color: Color(0xFF27B4E4),
+                            ),
+                            child: Center(
+                              child: Icon(Icons.camera_alt_outlined,color: Colors.white,size: 16,),
                             ),
                           ),
                         ),
@@ -124,14 +124,14 @@ class EditprofileWidget extends StatelessWidget {
               child: InkWell(
                 onTap: (){},
                 child: Container(
-                  child: Center(
-                    child: Text("UPDATE PROFILE",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 16),),
-                  ),
                   height: 42,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     color: Color(0xFF27B4E4),
+                  ),
+                  child: Center(
+                    child: Text("UPDATE PROFILE",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 16),),
                   ),
                 ),
               ),
