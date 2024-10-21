@@ -150,7 +150,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        SizedBox(
                           height: 50,
                           width: 150,
                           child: Stack(
@@ -191,7 +191,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             ],
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 50,
                           width: 150,
                           child: Stack(
@@ -240,6 +240,21 @@ class _AboutScreenState extends State<AboutScreen> {
               Positioned(
                 top: 350,
                 child: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFBDC7D8), // Left color
+                          Colors.white,
+                          Colors.white
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  height: 900,
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -458,21 +473,6 @@ class _AboutScreenState extends State<AboutScreen> {
                       ),
                     ],
                   ),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFFBDC7D8), // Left color
-                          Colors.white,
-                          Colors.white
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  height: 900,
-                  width: MediaQuery.of(context).size.width,
                 ),
               )
             ],

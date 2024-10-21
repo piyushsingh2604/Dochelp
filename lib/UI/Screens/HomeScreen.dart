@@ -1,6 +1,7 @@
 import 'package:dochelp/UI/Widgets/Category_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
+import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,12 +54,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   Positioned(
                     top: 30,
                     right: 20,
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(60),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WorkerBottomBar(),
+                            ));
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(60),
+                        ),
                       ),
                     ),
                   ),
@@ -77,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: SizedBox(
                           width: 200,
                           child: TextField(
-                           // readOnly: true,
+                            // readOnly: true,
                             onTap: () {
                               // Navigator.push(
                               //     context,
