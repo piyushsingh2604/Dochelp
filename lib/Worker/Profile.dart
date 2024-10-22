@@ -27,7 +27,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: 190,
               width: MediaQuery.of(context).size.width,
               child: Stack(
@@ -41,6 +41,11 @@ class _WorkerProfileState extends State<WorkerProfile> {
                     left: MediaQuery.of(context).size.width / 2 - 60,
                     top: 10,
                     child: Container(
+                      height: 130,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(130)),
                       child: Center(
                         child: Container(
                           height: 122,
@@ -50,11 +55,6 @@ class _WorkerProfileState extends State<WorkerProfile> {
                               borderRadius: BorderRadius.circular(124)),
                         ),
                       ),
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(130)),
                     ),
                   ),
                   Positioned(
