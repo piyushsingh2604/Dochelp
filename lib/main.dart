@@ -1,6 +1,5 @@
 
 import 'package:dochelp/Auth/Login.dart';
-import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:dochelp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

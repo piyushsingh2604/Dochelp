@@ -1,3 +1,4 @@
+import 'package:dochelp/Worker/EditProfile_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -71,7 +72,13 @@ class _WorkerProfileState extends State<WorkerProfile> {
                     top: 174,
                     left: MediaQuery.of(context).size.width / 2 - 30,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditprofileWidget(),
+                            ));
+                      },
                       child: Row(
                         children: [
                           Text(
@@ -228,7 +235,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
               indent: 15,
               endIndent: 15,
             ),
-              Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
               child: Container(
                 color: Colors.white,
@@ -246,7 +253,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
                       ),
                     ),
                     Positioned(
-                      right: 25,
+                        right: 25,
                         left: 25,
                         top: 19.5,
                         child: Text(

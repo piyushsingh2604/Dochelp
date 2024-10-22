@@ -181,15 +181,6 @@ class _SignUpState extends State<SignUp> {
                           ));
                   },
                   child: Container(
-                    child: Center(
-                      child: Text(
-                        "SIGN UP",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18),
-                      ),
-                    ),
                     height: 45,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -203,6 +194,15 @@ class _SignUpState extends State<SignUp> {
                           end: Alignment.centerRight,
                         ),
                         borderRadius: BorderRadius.circular(30)),
+                    child: Center(
+                      child: Text(
+                        "SIGN UP",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18),
+                      ),
+                    ),
                   ),
                 ),
               ),

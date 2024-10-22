@@ -1,3 +1,4 @@
+import 'package:dochelp/Auth/Forget.dart';
 import 'package:dochelp/Auth/SignUp.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,13 @@ class _LoginState extends State<Login> {
                         right: 30,
                         top: 190,
                         child: InkWell(
-                          onTap: (){},
+                          onTap: (){
+                              Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Forget(),
+                          ));
+                          },
                           child: Text("Forgot password?",style: GoogleFonts.roboto(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -154,9 +161,6 @@ class _LoginState extends State<Login> {
                           ));
                   },
                   child: Container(
-                    child: Center(
-                      child: Text("SIGN IN",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),),
-                    ),
                     height: 45,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -170,6 +174,9 @@ class _LoginState extends State<Login> {
                   end: Alignment.centerRight,
                             ),
                       borderRadius: BorderRadius.circular(30)
+                    ),
+                    child: Center(
+                      child: Text("SIGN IN",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),),
                     ),
                   ),
                 ),

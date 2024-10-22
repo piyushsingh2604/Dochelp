@@ -122,7 +122,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Icon(
-                          Icons.edit_outlined,
+                          Icons.camera_alt_outlined,
                           color: Colors.black,
                           size: 9, // Icon size
                         ),

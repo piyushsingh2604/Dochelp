@@ -31,14 +31,15 @@ class CategoryWidget extends StatelessWidget {
   Widget _buildSpecialistContainer(BuildContext context, String profession, IconData icon) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => DoctorListScreen(
-        //       profession: profession,
-        //     ),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SalonListScreen(
+              uid: '',
+              profession: profession,
+            ),
+          ),
+        );
       },
       child: Container(
         
@@ -89,11 +90,11 @@ class CategoryWidget extends StatelessWidget {
   }
 }
 
-class DoctorListScreen extends StatelessWidget {
+class SalonListScreen extends StatelessWidget {
   final String profession;
   final String uid;
 
-  const DoctorListScreen({
+  const SalonListScreen({
     super.key,
     required this.profession,
     required this.uid,
