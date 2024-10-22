@@ -1,3 +1,5 @@
+import 'package:dochelp/Auth/SignUp.dart';
+import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -143,35 +145,52 @@ class _LoginState extends State<Login> {
                 left: 30,
                 right: 30,
                 top: 440,
-                child: Container(
-                  child: Center(
-                    child: Text("SIGN IN",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),),
-                  ),
-                  height: 45,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                     gradient: LinearGradient(
-                colors: [
-                  Color(0xFFb61636),
-                  Color(0xFF731c3c),
-                  Color(0xFF341938),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                          ),
-                    borderRadius: BorderRadius.circular(30)
+                child: InkWell(
+                  onTap: (){
+                                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BottomBar(),
+                          ));
+                  },
+                  child: Container(
+                    child: Center(
+                      child: Text("SIGN IN",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),),
+                    ),
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                       gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFb61636),
+                    Color(0xFF731c3c),
+                    Color(0xFF341938),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                            ),
+                      borderRadius: BorderRadius.circular(30)
+                    ),
                   ),
                 ),
               ),
               Positioned(
                 right: 28,
-                top: 590,
+                bottom: 50,
                 child: Text("Don't have account?",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w500,color: Color(0xFFAEADB8)),))
            
            , Positioned(
                 right: 28,
-                top: 607,
-                child: Text("Sign up",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Color(0xFF281D3F)),))
+                bottom: 30,
+                child: InkWell(
+                  onTap: (){
+                                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUp(),
+                          ));
+                  },
+                  child: Text("Sign up",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Color(0xFF281D3F)),)))
             ],
           ),
         ),
