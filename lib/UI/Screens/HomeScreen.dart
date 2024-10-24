@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  String name;
+  HomeScreen({required this.name});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       top: 40,
                       left: 20,
                       child: Text(
-                        "Morning Janna",
+                        "Hello ${widget.name}",
                         style: GoogleFonts.roboto(
                             fontSize: 14, fontWeight: FontWeight.w300),
 

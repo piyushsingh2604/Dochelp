@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
-
+  String name;
+  String cerrentuid;
+  BottomBar({
+    required this.cerrentuid,
+    required this.name,
+  });
   @override
   _BottomBarState createState() => _BottomBarState();
 }
@@ -37,11 +41,11 @@ class _BottomBarState extends State<BottomBar> {
           });
         },
         children: [
-          HomeScreen(),
+          HomeScreen(name: widget.name,),
           FavScreen(),
           Appointmentscreen(),
-           Profilescreen(),
-             ],
+          Profilescreen(),
+        ],
       ),
       bottomNavigationBar: AnimatedNotchBottomBar(
         notchBottomBarController: _notchBottomBarController,
@@ -53,7 +57,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             activeItem: Icon(
               Icons.home_filled,
-              color:Color(0xFF2C41FF),
+              color: Color(0xFF2C41FF),
             ),
             itemLabel: 'Home',
           ),
@@ -64,18 +68,18 @@ class _BottomBarState extends State<BottomBar> {
             ),
             activeItem: Icon(
               Icons.favorite,
-              color:Color(0xFF2C41FF),
+              color: Color(0xFF2C41FF),
             ),
             itemLabel: 'Favorites',
           ),
-            BottomBarItem(
+          BottomBarItem(
             inActiveItem: Icon(
               Icons.calendar_month_outlined,
               color: Colors.blueGrey,
             ),
             activeItem: Icon(
               Icons.calendar_month,
-              color:Color(0xFF2C41FF),
+              color: Color(0xFF2C41FF),
             ),
             itemLabel: 'Appointment',
           ),
@@ -86,7 +90,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             activeItem: Icon(
               Icons.person,
-              color:Color(0xFF2C41FF),
+              color: Color(0xFF2C41FF),
             ),
             itemLabel: 'Profile',
           ),

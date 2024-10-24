@@ -1,5 +1,7 @@
+import 'package:dochelp/Auth/Login.dart';
 import 'package:dochelp/Auth/SignUp.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +14,24 @@ class Forget extends StatefulWidget {
 }
 
 class _ForgetState extends State<Forget> {
+  TextEditingController reset = TextEditingController();
+  String _reset = "";
+  final _formkey = GlobalKey<FormState>();
+
+  resetfunction() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _reset);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "No User Found for that Email",
+          style: TextStyle(fontSize: 18.0, color: Colors.black),
+        )));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +59,10 @@ class _ForgetState extends State<Forget> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,))),
+                      icon: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                      ))),
               Positioned(
                   left: 20,
                   top: 45,
@@ -76,7 +99,7 @@ class _ForgetState extends State<Forget> {
                           left: 30,
                           top: 70,
                           child: Text(
-                            "New Password",
+                            "Enter Gmail",
                             style: TextStyle(
                               color: Color(0xFFB21837),
                               fontSize: 14,
@@ -88,6 +111,7 @@ class _ForgetState extends State<Forget> {
                         left: 30,
                         right: 30,
                         child: TextField(
+                          controller: reset,
                           style: TextStyle(color: Colors.grey),
                           cursorColor: Colors.grey[400],
                           cursorHeight: 16,
@@ -116,11 +140,10 @@ class _ForgetState extends State<Forget> {
                 top: 450,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BottomBar(),
-                        ));
+                    setState(() {
+                      _reset = reset.text;
+                    });
+                    resetfunction();
                   },
                   child: Container(
                     height: 45,

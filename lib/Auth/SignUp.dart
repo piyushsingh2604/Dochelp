@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/Auth/Login.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +14,49 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController _name = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+  String name = "", email = "", pass = "";
+
+  Future<void> signUp() async {
+    if (pass.isNotEmpty) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: pass);
+
+        String uid = userCredential.user!.uid;
+
+        await FirebaseFirestore.instance.collection('user').doc(uid).set({
+          'name': name,
+          'email': email,
+          'uid': uid,
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("SignUp is completed")));
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomBar(
+                cerrentuid: uid,
+                name: name,
+              ),
+            ));
+      } on FirebaseException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("weak password")));
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("email already in use")));
+        } else {
+          print("An error occurred. Please try again.");
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +125,7 @@ class _SignUpState extends State<SignUp> {
                         left: 30,
                         right: 30,
                         child: TextField(
+                          controller: _name,
                           style: TextStyle(color: Colors.grey),
                           cursorColor: Colors.grey[400],
                           cursorHeight: 16,
@@ -102,7 +148,7 @@ class _SignUpState extends State<SignUp> {
                           left: 30,
                           top: 125,
                           child: Text(
-                            "Phone or Gmail",
+                            "Gmail",
                             style: TextStyle(
                               color: Color(0xFFB21837),
                               fontSize: 14,
@@ -114,6 +160,7 @@ class _SignUpState extends State<SignUp> {
                         left: 30,
                         right: 30,
                         child: TextField(
+                          controller: _email,
                           style: TextStyle(color: Colors.grey),
                           cursorColor: Colors.grey[400],
                           cursorHeight: 16,
@@ -146,6 +193,7 @@ class _SignUpState extends State<SignUp> {
                         left: 30,
                         right: 30,
                         child: TextField(
+                          controller: _pass,
                           style: TextStyle(color: Colors.grey),
                           cursorColor: Colors.grey[400],
                           cursorHeight: 16,
@@ -173,12 +221,8 @@ class _SignUpState extends State<SignUp> {
                 right: 30,
                 top: 520,
                 child: InkWell(
-                  onTap: (){
-                                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BottomBar(),
-                          ));
+                  onTap: () {
+                    Signupbutton();
                   },
                   child: Container(
                     height: 45,
@@ -240,5 +284,28 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  Future<void> Signupbutton() async {
+    var value = _pass.text;
+    var secondvalue = _email.text;
+    var thirdvalue = _name.text;
+    if (thirdvalue.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Enter name")));
+    } else if (secondvalue.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Enter Gmail")));
+    } else if (value.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Enter Password")));
+    } else {
+      setState(() {
+        email = _email.text;
+        pass = _pass.text;
+        name = _name.text;
+      });
+    }
+    signUp();
   }
 }
