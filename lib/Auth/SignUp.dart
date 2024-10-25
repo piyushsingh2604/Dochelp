@@ -14,9 +14,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  TextEditingController _name = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _pass = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   String name = "", email = "", pass = "";
 
   Future<void> signUp() async {
@@ -28,7 +28,7 @@ class _SignUpState extends State<SignUp> {
         String uid = userCredential.user!.uid;
 
         await FirebaseFirestore.instance.collection('user').doc(uid).set({
-          'name': name,
+          'username': name,
           'email': email,
           'uid': uid,
         });

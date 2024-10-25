@@ -4,6 +4,7 @@ import 'package:dochelp/Auth/SignUp.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,8 +16,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _email = TextEditingController();
-  TextEditingController _pass = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   String email = '', pass = '';
 
   Signin() async {
@@ -32,7 +33,7 @@ class _LoginState extends State<Login> {
 
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Login complete")));
-        String username = userdoc['name'];
+        String username = userdoc['username'];
         String userid = userdoc['uid'];
         Navigator.push(
             context,
@@ -204,6 +205,7 @@ class _LoginState extends State<Login> {
                 top: 440,
                 child: InkWell(
                   onTap: () {
+                    HapticFeedback.heavyImpact();
                     loginbutton();
                   },
                   child: Container(
@@ -275,10 +277,10 @@ class _LoginState extends State<Login> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Enter Gmail")));
     }
-     if (value.isEmpty) {
+    if (value.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Enter Password")));
-    }  else {
+    } else {
       setState(() {
         email = _email.text;
         pass = _pass.text;

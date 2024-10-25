@@ -8,7 +8,7 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 class BottomBar extends StatefulWidget {
   String name;
   String cerrentuid;
-  BottomBar({
+  BottomBar({super.key, 
     required this.cerrentuid,
     required this.name,
   });

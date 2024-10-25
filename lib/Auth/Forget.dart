@@ -1,9 +1,5 @@
-import 'package:dochelp/Auth/Login.dart';
-import 'package:dochelp/Auth/SignUp.dart';
-import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Forget extends StatefulWidget {

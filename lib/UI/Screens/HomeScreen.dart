@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   String name;
-  HomeScreen({required this.name});
+  HomeScreen({super.key, required this.name});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -172,3 +172,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
