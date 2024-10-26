@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/Auth/Forget.dart';
 import 'package:dochelp/Auth/SignUp.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
-import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

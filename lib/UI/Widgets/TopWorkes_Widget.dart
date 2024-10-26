@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class TopworkesWidget extends StatelessWidget {
   String userId;
-  TopworkesWidget({required this.userId});
+  TopworkesWidget({super.key, required this.userId});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +36,7 @@ class TopworkesWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 var data = filteredDocs[index].data();
                 final users = docs[index];
-                var useruid = users.id;
+                  var useruid = filteredDocs[index].id; 
                 return Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: InkWell(

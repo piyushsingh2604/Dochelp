@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class AboutScreen extends StatefulWidget {
   String userId;
   String userInfo;
-  AboutScreen({
+  AboutScreen({super.key, 
     required this.userId,
     required this.userInfo,
   });
@@ -70,6 +70,10 @@ class _AboutScreenState extends State<AboutScreen> {
           );
         } else if (snapshot.hasData) {
           final info = snapshot.data!;
+            String? imageUrl = info['images'] is List && info['images'].isNotEmpty 
+                ? info['images'][0] 
+                : null; // Get the first image URL
+
           return SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
@@ -146,7 +150,13 @@ class _AboutScreenState extends State<AboutScreen> {
                             height: 110,
                             width: 110,
                             decoration: BoxDecoration(
-                                color: Colors.green,
+                              color: Colors.green,
+                               image: imageUrl != null 
+                                  ? DecorationImage(
+                                      image: NetworkImage(imageUrl),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
                                 borderRadius: BorderRadius.circular(110)),
                           ),
                           Gap(10),

@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
  String uid;
- CategoryWidget({required this.uid});
+ CategoryWidget({super.key, required this.uid});
 
   @override
   Widget build(BuildContext context) {

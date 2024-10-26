@@ -9,17 +9,13 @@ import 'package:google_fonts/google_fonts.dart';
 class HomeScreen extends StatefulWidget {
   String name;
   String uid;
-  HomeScreen({super.key, 
-  required this.uid,
-  required this.name});
+  HomeScreen({super.key, required this.uid, required this.name});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
-   String? imageUrl;
+  String? imageUrl;
 
   @override
   void initState() {
@@ -47,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print("User document does not exist");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,22 +85,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   Positioned(
                     top: 30,
                     right: 20,
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(60),
-                        image: imageUrl != null
-                            ? DecorationImage(
-                                image: NetworkImage(imageUrl!),
-                                fit: BoxFit.cover,
-                              )
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WorkerBottomBar(),
+                            ));
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(60),
+                          image: imageUrl != null
+                              ? DecorationImage(
+                                  image: NetworkImage(imageUrl!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        child: imageUrl == null
+                            ? Center(child: CircularProgressIndicator())
                             : null,
                       ),
-                      child: imageUrl == null
-                          ? Center(child: CircularProgressIndicator())
-                          : null,
                     ),
                   ),
                   Positioned(
@@ -162,7 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: SizedBox(
                           height: 73,
                           width: MediaQuery.of(context).size.width,
-                          child: CategoryWidget(uid: widget.uid,)))
+                          child: CategoryWidget(
+                            uid: widget.uid,
+                          )))
                 ],
               ),
             ),
@@ -197,7 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SizedBox(
                 height: 500,
                 width: MediaQuery.of(context).size.width,
-                child: TopworkesWidget(userId: widget.uid,),
+                child: TopworkesWidget(
+                  userId: widget.uid,
+                ),
               ),
             )
           ],
