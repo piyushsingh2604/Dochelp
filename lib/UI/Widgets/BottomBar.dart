@@ -7,9 +7,9 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 
 class BottomBar extends StatefulWidget {
   String name;
-  String cerrentuid;
+  String currentuid;
   BottomBar({super.key, 
-    required this.cerrentuid,
+    required this.currentuid,
     required this.name,
   });
   @override
@@ -41,7 +41,7 @@ class _BottomBarState extends State<BottomBar> {
           });
         },
         children: [
-          HomeScreen(name: widget.name,),
+          HomeScreen(name: widget.name,uid: widget.currentuid,),
           FavScreen(),
           Appointmentscreen(),
           Profilescreen(),

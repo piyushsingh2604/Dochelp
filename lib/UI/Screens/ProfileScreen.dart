@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profilescreen extends StatefulWidget {
+  const Profilescreen({super.key});
+
   @override
   State<Profilescreen> createState() => _ProfilescreenState();
 }
@@ -64,59 +66,87 @@ class _ProfilescreenState extends State<Profilescreen> {
       await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
         'name': nameController.text,
       });
-    
     }
   }
 
   Future<void> updateAddress() async {
-  final user = currentuser.currentUser;
-  if (user != null) {
-    await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
-      'address': _controller.text,
+    final user = currentuser.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
+        'address': _controller.text,
+      });
+    }
+  }
+
+// image function
+  File? _image;
+
+ Future<void> _pickImage() async {
+  final ImagePicker picker = ImagePicker();
+  final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    print('Picked image: ${pickedFile.path}');
+    User? user = FirebaseAuth.instance.currentUser;
+    String? oldImageUrl;
+
+    // Fetch the old image URL from Firestore
+    if (user != null) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+      var data = doc.data() as Map<String, dynamic>?;
+
+      if (data != null && data['images'] is List && data['images'].isNotEmpty) {
+        oldImageUrl = data['images'][0]; // Get the old image URL
+      }
+    }
+
+    setState(() {
+      _image = File(pickedFile.path);
     });
+
+    await _uploadImage(_image!, oldImageUrl);
+  } else {
+    print('No image selected');
   }
 }
-// image function 
-   File? _imageFile; // To hold the selected image file
-  String? _imageUrl; // To store the uploaded image URL
 
-  Future<void> pickAndUploadImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+ Future<void> _uploadImage(File image, String? oldImageUrl) async {
+  try {
+    // Delete the old image from Firebase Storage
+    if (oldImageUrl != null && oldImageUrl.isNotEmpty) {
+      Reference oldImageRef = FirebaseStorage.instance.refFromURL(oldImageUrl);
+      await oldImageRef.delete();
+      print('Deleted old image: $oldImageUrl');
+    }
 
-    if (image != null) {
-      setState(() {
-        _imageFile = File(image.path); // Set the selected image file
+    // Upload the new image
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference storageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = storageRef.putFile(image);
+
+    // Await the upload completion and get the download URL
+    String downloadURL = await (await uploadTask).ref.getDownloadURL();
+    print('Uploaded new image: $downloadURL');
+
+    // Get the current user
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Update the user's document with the new image URL
+      await FirebaseFirestore.instance.collection('user').doc(user.uid).update({
+        'images': [downloadURL], // Store only the new image URL
+        'updated_at': Timestamp.now(),
       });
 
-      // Upload the image to Firebase
-      await uploadImageToFirebase();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Uploaded! URL: $downloadURL')),
+      );
     }
+  } catch (e) {
+    print('Upload failed: $e');
   }
+}
 
-  Future<void> uploadImageToFirebase() async {
-    if (_imageFile == null) return;
-
-    try {
-      String fileName = 'images/${DateTime.now().millisecondsSinceEpoch}.png';
-      Reference reference = FirebaseStorage.instance.ref().child(fileName);
-
-      UploadTask uploadTask = reference.putFile(_imageFile!);
-      TaskSnapshot snapshot = await uploadTask;
-
-      // Get the download URL
-      String downloadUrl = await snapshot.ref.getDownloadURL();
-      setState(() {
-        _imageUrl = downloadUrl; // Store the download URL
-      });
-      print("Image uploaded: $downloadUrl");
-      
-      // Optionally, you can save the downloadUrl to Firestore or another database here
-
-    } catch (e) {
-      print("Error uploading image: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +158,6 @@ class _ProfilescreenState extends State<Profilescreen> {
               .where('uid', isEqualTo: currentuser.currentUser!.uid)
               .snapshots(),
           builder: (context, snapshot) {
-            final docs = snapshot.data!.docs;
-
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -139,6 +167,8 @@ class _ProfilescreenState extends State<Profilescreen> {
                 child: Text("Error ${snapshot.hasError}"),
               );
             } else if (snapshot.hasData) {
+              final docs = snapshot.data!.docs;
+
               return ListView.builder(
                 itemCount: docs.length,
                 itemBuilder: (context, index) {
@@ -152,7 +182,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                           padding: const EdgeInsets.only(top: 35),
                           child: Stack(
                             children: [
-                            
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
@@ -177,7 +206,16 @@ class _ProfilescreenState extends State<Profilescreen> {
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(image: NetworkImage(data['']?? '')),
+                                    image: DecorationImage(
+                                        image:
+                                           NetworkImage(
+              (data['images'] is List && data['images'].isNotEmpty)
+                  ? data['images'][0]
+                  : '',
+            ),
+            fit: BoxFit.cover, 
+                                            
+                                            ),
                                     borderRadius: BorderRadius.circular(100),
                                     border: Border.all(
                                         color: Color(0xFFEDBC52), width: 1.9)),
@@ -186,7 +224,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                                 left: 85,
                                 bottom: 17,
                                 child: InkWell(
-                                  onTap: pickAndUploadImage,
+                                  onTap: _pickImage,
                                   child: Container(
                                     height: 16,
                                     width: 16,
@@ -243,7 +281,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                                         ),
                                         Gap(5),
                                         Text(
-                                          data['name'] ?? "Update your name",
+                                          data['name'] ?? "Update your userName",
                                           style: TextStyle(
                                               color: const Color.fromARGB(
                                                   117, 0, 0, 0),
@@ -504,130 +542,190 @@ class _ProfilescreenState extends State<Profilescreen> {
                                       ],
                                     ),
                                   ),
-                               IconButton(
-  onPressed: () {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Color(0xFFF4F4F4),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
-            ),
-          ),
-          height: 900,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 11, top: 20),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                ),
-              ),
-              Gap(30),
-              Autocomplete<String>(
-                optionsBuilder: (TextEditingValue textEditingValue) {
-                  if (textEditingValue.text.isEmpty) {
-                    return const Iterable<String>.empty();
-                  }
-                  return states.where((String state) {
-                    return state
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase());
-                  });
-                },
-                onSelected: (String selectedState) {
-                  // Update the TextEditingController with the selected state
-                  _controller.text = selectedState;
-                },
-                fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                  _controller = textEditingController; // Use the passed textEditingController
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromARGB(223, 255, 255, 255),
-                      ),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, bottom: 16),
-                        child: TextField(
-                          focusNode: focusNode,
-                          controller: textEditingController, // Pass the controller here
-                          cursorHeight: 16,
-                          decoration: InputDecoration(
-                            hintText: 'Enter your State',
-                            hintStyle: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w300),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                child: InkWell(
-                  onTap: () {
-                    var value = _controller.text;
-                    if (value.isEmpty) {
-                      print("Error: State is empty");
-                    } else {
-                      updateAddress(); // Ensure this updates the Firestore document
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Your State is updated")));
-                    }
-                  },
-                  child: Container(
-                    height: 42,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF2C41FF),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "UPDATE",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  },
-  icon: Icon(
-    Icons.edit_square,
-    size: 18,
-    color: const Color.fromARGB(117, 0, 0, 0),
-  ),
-)
-
+                                  IconButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFF4F4F4),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(0),
+                                                topRight: Radius.circular(0),
+                                              ),
+                                            ),
+                                            height: 900,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 11, top: 20),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: Icon(
+                                                      Icons
+                                                          .arrow_back_ios_new_rounded,
+                                                      color: Colors.black,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Gap(30),
+                                                Autocomplete<String>(
+                                                  optionsBuilder:
+                                                      (TextEditingValue
+                                                          textEditingValue) {
+                                                    if (textEditingValue
+                                                        .text.isEmpty) {
+                                                      return const Iterable<
+                                                          String>.empty();
+                                                    }
+                                                    return states
+                                                        .where((String state) {
+                                                      return state
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              textEditingValue
+                                                                  .text
+                                                                  .toLowerCase());
+                                                    });
+                                                  },
+                                                  onSelected:
+                                                      (String selectedState) {
+                                                    // Update the TextEditingController with the selected state
+                                                    _controller.text =
+                                                        selectedState;
+                                                  },
+                                                  fieldViewBuilder: (context,
+                                                      textEditingController,
+                                                      focusNode,
+                                                      onFieldSubmitted) {
+                                                    _controller =
+                                                        textEditingController; // Use the passed textEditingController
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 20,
+                                                              top: 20),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          color: const Color
+                                                              .fromARGB(223,
+                                                              255, 255, 255),
+                                                        ),
+                                                        height: 45,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 20,
+                                                                  bottom: 16),
+                                                          child: TextField(
+                                                            focusNode:
+                                                                focusNode,
+                                                            controller:
+                                                                textEditingController, // Pass the controller here
+                                                            cursorHeight: 16,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  'Enter your State',
+                                                              hintStyle: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                              border:
+                                                                  InputBorder
+                                                                      .none,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20,
+                                                          right: 20,
+                                                          top: 30),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      var value =
+                                                          _controller.text;
+                                                      if (value.isEmpty) {
+                                                        print(
+                                                            "Error: State is empty");
+                                                      } else {
+                                                        updateAddress(); // Ensure this updates the Firestore document
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(SnackBar(
+                                                                content: Text(
+                                                                    "Your State is updated")));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      height: 42,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color:
+                                                            Color(0xFF2C41FF),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "UPDATE",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.edit_square,
+                                      size: 18,
+                                      color: const Color.fromARGB(117, 0, 0, 0),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),

@@ -3,7 +3,6 @@ import 'package:dochelp/Auth/Login.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUp extends StatefulWidget {
@@ -39,7 +38,7 @@ class _SignUpState extends State<SignUp> {
             context,
             MaterialPageRoute(
               builder: (context) => BottomBar(
-                cerrentuid: uid,
+                currentuid: uid,
                 name: name,
               ),
             ));

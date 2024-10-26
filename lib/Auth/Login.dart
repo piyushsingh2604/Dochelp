@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/Auth/Forget.dart';
 import 'package:dochelp/Auth/SignUp.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
+import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Login extends StatefulWidget {
@@ -26,6 +26,9 @@ class _LoginState extends State<Login> {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: pass);
 
+
+            
+
         String uid = userCredential.user!.uid;
 
         DocumentSnapshot userdoc =
@@ -38,10 +41,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BottomBar(
-                cerrentuid: userid,
-                name: username,
-              ),
+              builder: (context) => BottomBar(currentuid: userid,name: username,)
             ));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'wrong-password') {

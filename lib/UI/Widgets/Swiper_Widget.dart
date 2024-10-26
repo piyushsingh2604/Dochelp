@@ -180,12 +180,10 @@ class _Slider_WidgetState extends State<Slider_Widget> {
   final PageController _pageController = PageController();
 
   // List of colors to display in the outer banner slider
-  final List<Color> outerStyleColors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.orange,
-    Colors.purple,
+  final List<String> banner = [
+   'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/beauty-salon-banner-ad-design-template-882e4c92d5c005fa1237eb393f8dafb5_screen.jpg?ts=1646469155',
+   'https://5.imimg.com/data5/FI/SQ/MY-34687665/salon-banner-500x500.jpg',
+   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzsY2bN5xKskbQ9zB5wGrx5o-bXceYCKqrac8rL3xMLI76ZBDIy-otcybCkmKOaX0Mm14&usqp=CAU',
   ];
 
   @override
@@ -209,7 +207,7 @@ class _Slider_WidgetState extends State<Slider_Widget> {
             width: double.infinity,
             height: 145, // Set the height of the CarouselSlider here
             child: CarouselSlider(
-              options: CarouselOptions(
+              options: CarouselOptions(autoPlayInterval: Duration(seconds: 20),
                 autoPlay: true,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: true,
@@ -223,13 +221,13 @@ class _Slider_WidgetState extends State<Slider_Widget> {
               ),
           
               /// Items with color containers
-              items: outerStyleColors.map((color) {
+              items: banner.map((imageUrl) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
                       height: 145, // Set the height of the container here
                       decoration: BoxDecoration(
-                        color: color,
+                        image: DecorationImage(image: NetworkImage(imageUrl),fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       width: MediaQuery.of(context).size.width,
