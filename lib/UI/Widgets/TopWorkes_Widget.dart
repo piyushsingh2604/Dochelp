@@ -31,7 +31,7 @@ class TopworkesWidget extends StatelessWidget {
                   data['profession'].isNotEmpty;
             }).toList();
 
-            return ListView.builder(
+            return ListView.builder(physics: NeverScrollableScrollPhysics(),
               itemCount: filteredDocs.length,
               itemBuilder: (context, index) {
                 var data = filteredDocs[index].data();
