@@ -15,7 +15,7 @@ class _AppointmentscreenState extends State<Appointmentscreen> {
       backgroundColor: Color(0xFFF7F8F9),
       appBar: AppBar(
       backgroundColor: Color(0xFFF7F8F9),
-
+automaticallyImplyLeading: false,
         title: Text("Appointments",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w500),
         
         ),

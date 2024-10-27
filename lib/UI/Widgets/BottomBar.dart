@@ -42,7 +42,7 @@ class _BottomBarState extends State<BottomBar> {
         },
         children: [
           HomeScreen(name: widget.name,uid: widget.currentuid,),
-          FavScreen(),
+          FavScreen(userId: widget.currentuid,),
           Appointmentscreen(),
           Profilescreen(),
         ],

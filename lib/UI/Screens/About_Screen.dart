@@ -1,11 +1,12 @@
-//https://dribbble.com/shots/19102936-Online-Doctor-s-App-Medical-Appointments-Booking
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+
+
 
 class AboutScreen extends StatefulWidget {
   String userId;
@@ -51,6 +52,32 @@ class _AboutScreenState extends State<AboutScreen> {
         .get();
     return userdoc.data() as Map<String, dynamic>;
   }
+Future<void> _toggleFavorite(String favoriteId) async {
+  final userId = widget.userId; // Current user's ID
+
+  final docRef = FirebaseFirestore.instance.collection('user').doc(userId);
+
+  // Get the current favorites for the user
+  final docSnapshot = await docRef.get();
+
+  if (docSnapshot.exists) {
+    // Document exists, toggle favorite
+    List<dynamic> favorites = docSnapshot.data()!['favorites'] ?? [];
+
+    if (favorites.contains(favoriteId)) {
+      // Remove from favorites
+      favorites.remove(favoriteId);
+    } else {
+      // Add to favorites
+      favorites.add(favoriteId);
+    }
+
+    await docRef.update({'favorites': favorites});
+  } else {
+    // Document doesn't exist; handle accordingly if needed
+    await docRef.set({'favorites': [favoriteId]}); // Initialize with favorite
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +145,9 @@ class _AboutScreenState extends State<AboutScreen> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () async {
+    await _toggleFavorite(widget.userInfo); // widget.userInfo contains the user ID
+  },
                           child: Container(
                             height: 35,
                             width: 35,
@@ -252,7 +281,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                   Positioned(
                                       left: 58,
                                       child: Text(
-                                        "5 Years",
+                                        "${info['experience'] ?? ""} Years",
                                         style: GoogleFonts.roboto(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w300,

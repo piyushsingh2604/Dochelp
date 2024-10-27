@@ -112,7 +112,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              EditProfileWidget(),
+                                              EditProfileWidget(gmail: data['email']??"",name: data['username']??'',),
                                         ));
                                   },
                                   child: Row(

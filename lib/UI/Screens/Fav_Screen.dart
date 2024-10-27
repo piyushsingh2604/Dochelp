@@ -1,14 +1,11 @@
 import 'package:dochelp/UI/Widgets/Fav_Widget.dart';
 import 'package:flutter/material.dart';
 
-class FavScreen extends StatefulWidget {
-  const FavScreen({super.key});
+class FavScreen extends StatelessWidget {
+  final String userId;
 
-  @override
-  State<FavScreen> createState() => _FavScreenState();
-}
+   FavScreen({Key? key, required this.userId}) : super(key: key);
 
-class _FavScreenState extends State<FavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +13,7 @@ class _FavScreenState extends State<FavScreen> {
 
       appBar: AppBar(
               backgroundColor: Color(0xFFF7F8F9),
-
+automaticallyImplyLeading: false,
         title: Text("Favorites",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w500),
         
         ),
@@ -36,7 +33,7 @@ class _FavScreenState extends State<FavScreen> {
           child: SizedBox(
             height: 900,
             width: MediaQuery.of(context).size.width,
-            child: FavWidget()),
+            child: FavWidget(userId: userId,)),
         ),
           ],
         ),
