@@ -25,12 +25,14 @@ class _AboutScreenState extends State<AboutScreen> {
   List<DateTime> selectableDates = [];
   String? selectedTime;
   List<String> selectableTimes = [];
+  bool isFavorite = false; // Track favorite status
 
   @override
   void initState() {
     super.initState();
     _generateSelectableDates();
     _generateSelectableTimes();
+    _checkFavoriteStatus(); // Check if the item is a favorite
   }
 
   void _generateSelectableTimes() {
@@ -52,32 +54,46 @@ class _AboutScreenState extends State<AboutScreen> {
         .get();
     return userdoc.data() as Map<String, dynamic>;
   }
-Future<void> _toggleFavorite(String favoriteId) async {
-  final userId = widget.userId; // Current user's ID
 
-  final docRef = FirebaseFirestore.instance.collection('user').doc(userId);
+  Future<void> _checkFavoriteStatus() async {
+    final docRef = FirebaseFirestore.instance.collection('user').doc(widget.userId);
+    final docSnapshot = await docRef.get();
 
-  // Get the current favorites for the user
-  final docSnapshot = await docRef.get();
-
-  if (docSnapshot.exists) {
-    // Document exists, toggle favorite
-    List<dynamic> favorites = docSnapshot.data()!['favorites'] ?? [];
-
-    if (favorites.contains(favoriteId)) {
-      // Remove from favorites
-      favorites.remove(favoriteId);
-    } else {
-      // Add to favorites
-      favorites.add(favoriteId);
+    if (docSnapshot.exists) {
+      List<dynamic> favorites = docSnapshot.data()!['favorites'] ?? [];
+      setState(() {
+        isFavorite = favorites.contains(widget.userInfo);
+      });
     }
-
-    await docRef.update({'favorites': favorites});
-  } else {
-    // Document doesn't exist; handle accordingly if needed
-    await docRef.set({'favorites': [favoriteId]}); // Initialize with favorite
   }
-}
+
+  Future<void> _toggleFavorite(String favoriteId) async {
+    final userId = widget.userId;
+
+    final docRef = FirebaseFirestore.instance.collection('user').doc(userId);
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      List<dynamic> favorites = docSnapshot.data()!['favorites'] ?? [];
+
+      if (favorites.contains(favoriteId)) {
+        favorites.remove(favoriteId);
+      } else {
+        favorites.add(favoriteId);
+      }
+
+      await docRef.update({'favorites': favorites});
+      setState(() {
+        isFavorite = !isFavorite; // Toggle favorite status
+      });
+    } else {
+      await docRef.set({'favorites': [favoriteId]});
+      setState(() {
+        isFavorite = true; // If document doesn't exist, initialize as favorite
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,10 +172,15 @@ Future<void> _toggleFavorite(String favoriteId) async {
                                 color: Color(0xFFFBECEE)),
                             child: Center(
                                 child: Icon(
-                              Icons.favorite,
-                              size: 19,
-                              color: Color(0xFFFC4848),
-                            )),
+                                  isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  size: 19,
+                                  color: isFavorite
+                                      ? Color(0xFFFC4848)
+                                      : Color(0xFF7D88A5),
+                                ),
+),
                           ),
                         )
                       ],
