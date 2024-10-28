@@ -5,8 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
- String uid;
- CategoryWidget({super.key, required this.uid});
+  String uid;
+  CategoryWidget({super.key, required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +93,7 @@ class CategoryWidget extends StatelessWidget {
     return Colors.transparent; // All professions return transparent
   }
 }
+
 class SalonListScreen extends StatelessWidget {
   final String profession;
   final String uid;
@@ -141,7 +142,10 @@ class SalonListScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AboutScreen(userId: uid,userInfo: userid,),
+                        builder: (context) => AboutScreen(
+                          userId: uid,
+                          userInfo: userid,
+                        ),
                       ),
                     );
                   },
@@ -166,7 +170,8 @@ class SalonListScreen extends StatelessWidget {
                               image: DecorationImage(
                                 image: profileImageUrl.isNotEmpty
                                     ? NetworkImage(profileImageUrl)
-                                    : AssetImage('assets/default_image.png'), // Placeholder image
+                                    : AssetImage(
+                                        'assets/default_image.png'), // Placeholder image
                                 fit: BoxFit.cover,
                               ),
                             ),

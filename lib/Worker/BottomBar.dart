@@ -1,12 +1,16 @@
 
 import 'package:dochelp/Worker/Profile.dart';
 import 'package:dochelp/Worker/Worker_AppointmentScreen.dart';
+import 'package:dochelp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WorkerBottomBar extends StatefulWidget {
-  const WorkerBottomBar({super.key});
-
+String currentId;
+WorkerBottomBar({
+  required this.currentId
+});
   @override
   _WorkerBottomBarState createState() => _WorkerBottomBarState();
 }
@@ -36,7 +40,7 @@ class _WorkerBottomBarState extends State<WorkerBottomBar> {
           });
         },
         children: [
-          WorkerAppointmentscreen(),
+          WorkerAppointmentscreen(currentid: widget.currentId,),
            WorkerProfile(),
              ],
       ),

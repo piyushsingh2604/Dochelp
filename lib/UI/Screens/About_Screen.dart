@@ -5,13 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-
-
-
 class AboutScreen extends StatefulWidget {
   String userId;
   String userInfo;
-  AboutScreen({super.key, 
+  AboutScreen({
+    super.key,
     required this.userId,
     required this.userInfo,
   });
@@ -35,17 +33,102 @@ class _AboutScreenState extends State<AboutScreen> {
     _checkFavoriteStatus(); // Check if the item is a favorite
   }
 
-  void _generateSelectableTimes() {
-    selectableTimes = List.generate(10, (index) {
-      return DateFormat.jm().format(DateTime(0, 0, 0, 12 + index));
-    });
-  }
-
   void _generateSelectableDates() {
     selectableDates = List.generate(5, (index) {
       return DateTime.now().add(Duration(days: index));
     });
   }
+
+ void _generateSelectableTimes() {
+  selectableTimes = List.generate(14, (index) {
+    return DateFormat.jm().format(DateTime(0, 0, 0, index + 10));
+  });
+}
+
+  Future<void> _checkTimeAvailability(String time) async {
+    if (selectedDate == null) return;
+
+    // Format the selected date to match Firestore documents
+    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate!);
+
+    // Query Firestore to check if the selected time is already booked
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('appointments')
+        .where('date', isEqualTo: formattedDate)
+        .where('time', isEqualTo: time)
+        .where('profileUserId',
+            isEqualTo: widget.userInfo) // Check for the specific profile
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      // Time is already booked by another user
+      _showTimeAlreadyBookedDialog();
+    } else {
+      // Proceed to select the time
+      setState(() {
+        selectedTime = time;
+      });
+    }
+  }
+
+  void _showTimeAlreadyBookedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Time Already Booked'),
+          content: Text(
+              'The selected time has already been booked by another user. Please choose a different time.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _submitBooking() async {
+  if (selectedDate == null || selectedTime == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select both date and time.')));
+    return;
+  }
+
+  try {
+    final userInfo = await getinfo();
+    String username = userInfo?['username'] ?? 'Unknown User';
+    
+    String work = userInfo?['profession'] ?? ''; 
+
+    await FirebaseFirestore.instance.collection('appointments').add({
+      'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
+      'time': selectedTime,
+      'userId': widget.userId,
+      'profileUserId': widget.userInfo,
+      'Profileusername': username, 
+      'work': work,
+    });
+
+    // Reset selections and show success message
+    setState(() {
+      selectedDate = null;
+      selectedTime = null;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Appointment booked successfully!')));
+  } catch (e) {
+    print("Failed to add appointment: $e");
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Failed to book appointment.')));
+  }
+}
+
 
   Future<Map<String, dynamic>?> getinfo() async {
     DocumentSnapshot userdoc = await FirebaseFirestore.instance
@@ -56,7 +139,8 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Future<void> _checkFavoriteStatus() async {
-    final docRef = FirebaseFirestore.instance.collection('user').doc(widget.userId);
+    final docRef =
+        FirebaseFirestore.instance.collection('user').doc(widget.userId);
     final docSnapshot = await docRef.get();
 
     if (docSnapshot.exists) {
@@ -88,7 +172,9 @@ class _AboutScreenState extends State<AboutScreen> {
         isFavorite = !isFavorite; // Toggle favorite status
       });
     } else {
-      await docRef.set({'favorites': [favoriteId]});
+      await docRef.set({
+        'favorites': [favoriteId]
+      });
       setState(() {
         isFavorite = true; // If document doesn't exist, initialize as favorite
       });
@@ -111,9 +197,9 @@ class _AboutScreenState extends State<AboutScreen> {
           );
         } else if (snapshot.hasData) {
           final info = snapshot.data!;
-            String? imageUrl = info['images'] is List && info['images'].isNotEmpty 
-                ? info['images'][0] 
-                : null; // Get the first image URL
+          String? imageUrl = info['images'] is List && info['images'].isNotEmpty
+              ? info['images'][0]
+              : null; // Get the first image URL
 
           return SingleChildScrollView(
             child: Container(
@@ -162,8 +248,9 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         InkWell(
                           onTap: () async {
-    await _toggleFavorite(widget.userInfo); // widget.userInfo contains the user ID
-  },
+                            await _toggleFavorite(widget
+                                .userInfo); // widget.userInfo contains the user ID
+                          },
                           child: Container(
                             height: 35,
                             width: 35,
@@ -171,16 +258,16 @@ class _AboutScreenState extends State<AboutScreen> {
                                 borderRadius: BorderRadius.circular(7),
                                 color: Color(0xFFFBECEE)),
                             child: Center(
-                                child: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  size: 19,
-                                  color: isFavorite
-                                      ? Color(0xFFFC4848)
-                                      : Color(0xFF7D88A5),
-                                ),
-),
+                              child: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 19,
+                                color: isFavorite
+                                    ? Color(0xFFFC4848)
+                                    : Color(0xFF7D88A5),
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -198,13 +285,13 @@ class _AboutScreenState extends State<AboutScreen> {
                             height: 110,
                             width: 110,
                             decoration: BoxDecoration(
-                              color: Colors.green,
-                               image: imageUrl != null 
-                                  ? DecorationImage(
-                                      image: NetworkImage(imageUrl),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
+                                color: Colors.green,
+                                image: imageUrl != null
+                                    ? DecorationImage(
+                                        image: NetworkImage(imageUrl),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
                                 borderRadius: BorderRadius.circular(110)),
                           ),
                           Gap(10),
@@ -382,8 +469,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20, top: 10),
                             child: SizedBox(
-                              height:
-                                  90, // Set a height for the horizontal list
+                              height: 90,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: selectableDates.length,
@@ -393,6 +479,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                     onTap: () {
                                       setState(() {
                                         selectedDate = date;
+                                        selectedTime =
+                                            null; // Reset selected time when date is changed
                                       });
                                     },
                                     child: Container(
@@ -402,10 +490,11 @@ class _AboutScreenState extends State<AboutScreen> {
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(
-                                              color: const Color.fromARGB(
-                                                  31, 158, 158, 158),
-                                              blurRadius: 1,
-                                              spreadRadius: 1)
+                                            color: const Color.fromARGB(
+                                                31, 158, 158, 158),
+                                            blurRadius: 1,
+                                            spreadRadius: 1,
+                                          ),
                                         ],
                                         color: selectedDate != null &&
                                                 selectedDate!
@@ -433,7 +522,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                               fontSize: 13,
                                             ),
                                           ),
-                                          Gap(18),
+                                          SizedBox(height: 8),
                                           // Date
                                           Text(
                                             DateFormat('d').format(
@@ -470,8 +559,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20, top: 20),
                             child: SizedBox(
-                              height:
-                                  25, // Set a height for the horizontal list
+                              height: 25,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: selectableTimes.length,
@@ -481,6 +569,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                     onTap: () {
                                       setState(() {
                                         selectedTime = time;
+                                        _checkTimeAvailability(
+                                            time); // Check availability on time selection
                                       });
                                     },
                                     child: Container(
@@ -489,23 +579,26 @@ class _AboutScreenState extends State<AboutScreen> {
                                           EdgeInsets.symmetric(horizontal: 8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 158, 158, 158),
-                                            width: 0.2),
+                                          color: const Color.fromARGB(
+                                              255, 158, 158, 158),
+                                          width: 0.2,
+                                        ),
                                         color: selectedTime == time
                                             ? Color(0xFF1B4083)
                                             : Colors.white,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Center(
-                                        child: Text(time,
-                                            style: GoogleFonts.roboto(
-                                              color: selectedTime == time
-                                                  ? Colors.white
-                                                  : Color(0xFFA1A6B6),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                            )),
+                                        child: Text(
+                                          time,
+                                          style: TextStyle(
+                                            color: selectedTime == time
+                                                ? Colors.white
+                                                : Color(0xFFA1A6B6),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   );
@@ -521,7 +614,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                     launchUrlString("tel://${info['number']}");
+                                    launchUrlString("tel://${info['number']}");
                                   },
                                   child: Container(
                                     height: 50,
@@ -543,9 +636,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                     width: 10), // Add space between the buttons
                                 Expanded(
                                   child: GestureDetector(
-                                    onTap: () {
-                                      // Handle appointment action
-                                    },
+                                    onTap: _submitBooking,
                                     child: Container(
                                       height: 50,
                                       decoration: BoxDecoration(
@@ -585,3 +676,13 @@ class _AboutScreenState extends State<AboutScreen> {
     ));
   }
 }
+
+
+
+
+
+
+
+
+
+

@@ -31,12 +31,13 @@ class TopworkesWidget extends StatelessWidget {
                   data['profession'].isNotEmpty;
             }).toList();
 
-            return ListView.builder(physics: NeverScrollableScrollPhysics(),
+            return ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               itemCount: filteredDocs.length,
               itemBuilder: (context, index) {
                 var data = filteredDocs[index].data();
                 final users = docs[index];
-                  var useruid = filteredDocs[index].id; 
+                var useruid = filteredDocs[index].id;
                 return Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: InkWell(
@@ -44,7 +45,10 @@ class TopworkesWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AboutScreen(userId: userId,userInfo:useruid,),
+                          builder: (context) => AboutScreen(
+                            userId: userId,
+                            userInfo: useruid,
+                          ),
                         ),
                       );
                     },

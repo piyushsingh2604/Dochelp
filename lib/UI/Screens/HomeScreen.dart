@@ -280,7 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AboutScreen(userId: widget.uid, userInfo: userId),
+        builder: (context) =>
+            AboutScreen(userId: widget.uid, userInfo: userId),
       ),
     );
   }
@@ -324,7 +325,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WorkerBottomBar(),
+                            builder: (context) => WorkerBottomBar(
+                              currentId: widget.uid,
+                            ),
                           ),
                         );
                       },
@@ -372,7 +375,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           return Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: const Color.fromARGB(223, 255, 255, 255)),
+                                color:
+                                    const Color.fromARGB(223, 255, 255, 255)),
                             height: 45,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(

@@ -4,6 +4,9 @@ import 'package:dochelp/UI/Screens/HomeScreen.dart';
 import 'package:dochelp/UI/Screens/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class BottomBar extends StatefulWidget {
   String name;
@@ -43,7 +46,7 @@ class _BottomBarState extends State<BottomBar> {
         children: [
           HomeScreen(name: widget.name,uid: widget.currentuid,),
           FavScreen(userId: widget.currentuid,),
-          Appointmentscreen(),
+          Appointmentscreen(currentid: widget.currentuid,),
           Profilescreen(),
         ],
       ),

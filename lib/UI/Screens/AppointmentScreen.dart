@@ -2,7 +2,11 @@ import 'package:dochelp/UI/Widgets/Appointment_Widget.dart';
 import 'package:flutter/material.dart';
 
 class Appointmentscreen extends StatefulWidget {
-  const Appointmentscreen({super.key});
+ String currentid;
+
+ Appointmentscreen({
+  required this.currentid
+ });
 
   @override
   State<Appointmentscreen> createState() => _AppointmentscreenState();
@@ -35,7 +39,7 @@ automaticallyImplyLeading: false,
           child: SizedBox(
             height: 900,
             width: MediaQuery.of(context).size.width,
-            child: AppointmentWidget()),
+            child: AppointmentWidget(userId: widget.currentid,)),
         ),
           ],
         ),

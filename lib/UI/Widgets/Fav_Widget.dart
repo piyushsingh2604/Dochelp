@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FavWidget extends StatefulWidget {  // Change to StatefulWidget
+class FavWidget extends StatefulWidget {
+  // Change to StatefulWidget
   final String userId;
 
   FavWidget({Key? key, required this.userId}) : super(key: key);
@@ -15,16 +16,23 @@ class FavWidget extends StatefulWidget {  // Change to StatefulWidget
 
 class _FavWidgetState extends State<FavWidget> {
   Future<List<Map<String, dynamic>>> _getFavorites() async {
-    final userDoc = await FirebaseFirestore.instance.collection('user').doc(widget.userId).get();
+    final userDoc = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(widget.userId)
+        .get();
 
     if (userDoc.exists) {
-      List<String> favoriteIds = List<String>.from(userDoc.data()!['favorites'] ?? []);
+      List<String> favoriteIds =
+          List<String>.from(userDoc.data()!['favorites'] ?? []);
       List<Map<String, dynamic>> favoritesDetails = [];
       for (String favoriteId in favoriteIds) {
-        final favoriteDoc = await FirebaseFirestore.instance.collection('user').doc(favoriteId).get();
+        final favoriteDoc = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(favoriteId)
+            .get();
         if (favoriteDoc.exists) {
           favoritesDetails.add({
-            'id': favoriteId,  // Store the ID for later removal
+            'id': favoriteId, // Store the ID for later removal
             ...favoriteDoc.data() as Map<String, dynamic>,
           });
         }
@@ -35,14 +43,15 @@ class _FavWidgetState extends State<FavWidget> {
   }
 
   Future<void> _removeFavorite(String favoriteId) async {
-    final docRef = FirebaseFirestore.instance.collection('user').doc(widget.userId);
+    final docRef =
+        FirebaseFirestore.instance.collection('user').doc(widget.userId);
 
     // Get the current favorites for the user
     final docSnapshot = await docRef.get();
 
     if (docSnapshot.exists) {
       List<dynamic> favorites = docSnapshot.data()!['favorites'] ?? [];
-      favorites.remove(favoriteId);  // Remove the favorite
+      favorites.remove(favoriteId); // Remove the favorite
 
       await docRef.update({'favorites': favorites});
     }
@@ -75,7 +84,8 @@ class _FavWidgetState extends State<FavWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AboutScreen(userInfo: favorite['id'], userId: widget.userId),
+                      builder: (context) => AboutScreen(
+                          userInfo: favorite['id'], userId: widget.userId),
                     ),
                   );
                 },
@@ -101,10 +111,11 @@ class _FavWidgetState extends State<FavWidget> {
                               color: const Color.fromARGB(73, 76, 175, 79),
                               image: DecorationImage(
                                 image: NetworkImage(
-        favorite['images'] is List && favorite['images'].isNotEmpty 
-          ? favorite['images'][0] 
-          : 'path_to_default_image' // Provide a default image path here
-      ),
+                                    favorite['images'] is List &&
+                                            favorite['images'].isNotEmpty
+                                        ? favorite['images'][0]
+                                        : 'path_to_default_image' // Provide a default image path here
+                                    ),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -115,7 +126,8 @@ class _FavWidgetState extends State<FavWidget> {
                           top: 19,
                           child: Text(
                             favorite['username'] ?? 'Unknown',
-                            style: GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.w600),
+                            style: GoogleFonts.openSans(
+                                fontSize: 15, fontWeight: FontWeight.w600),
                           ),
                         ),
                         Positioned(
@@ -123,7 +135,8 @@ class _FavWidgetState extends State<FavWidget> {
                           top: 45,
                           child: Text(
                             favorite['profession'] ?? 'Unknown',
-                            style: GoogleFonts.roboto(fontSize: 10, fontWeight: FontWeight.w400),
+                            style: GoogleFonts.roboto(
+                                fontSize: 10, fontWeight: FontWeight.w400),
                           ),
                         ),
                         Positioned(
@@ -131,8 +144,10 @@ class _FavWidgetState extends State<FavWidget> {
                           right: 5,
                           child: IconButton(
                             onPressed: () async {
-                              await _removeFavorite(favorite['id']);  // Remove the favorite
-                              setState(() {});  // Rebuild the widget to reflect changes
+                              await _removeFavorite(
+                                  favorite['id']); // Remove the favorite
+                              setState(
+                                  () {}); // Rebuild the widget to reflect changes
                             },
                             icon: Icon(
                               Icons.favorite,

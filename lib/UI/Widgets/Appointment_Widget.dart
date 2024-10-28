@@ -1,19 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-class AppointmentWidget extends StatefulWidget {
-  const AppointmentWidget({super.key});
 
-  @override
-  State<AppointmentWidget> createState() => _AppointmentWidgetState();
-}
 
-class _AppointmentWidgetState extends State<AppointmentWidget> {
+
+
+
+
+class AppointmentWidget extends StatelessWidget {
+  final String userId; // The profile user's ID
+
+  AppointmentWidget({super.key, required this.userId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SizedBox(
+     
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('appointments')
+            .where('userId', isEqualTo: userId) // Fetching appointments for the user
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+            return Center(child: Text("No appointments found."));
+          }
+
+          final appointments = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: appointments.length,
+            itemBuilder: (context, index) {
+              var appointment = appointments[index].data() as Map<String, dynamic>;
+              return  SizedBox(
         height: 170,
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -31,7 +59,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                   top: 15,
                   left: 18,
                   child: Text(
-                    "Piyui",
+                    appointment['Profileusername']??"",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -41,7 +69,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                   top: 37,
                   left: 18,
                   child: Text(
-                    "Hair Dresser",
+                   appointment['work']??"",
                     style: TextStyle(
                         color: const Color.fromARGB(104, 0, 0, 0),
                         fontWeight: FontWeight.w400,
@@ -72,7 +100,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                                 ),
                                 Gap(3),
                                 Text(
-                                  "Tues Jan3,2024",
+                                  appointment['date']??"",
                                   style: TextStyle(
                                       fontSize: 9,
                                       color: const Color.fromARGB(
@@ -98,7 +126,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                                 ),
                                 Gap(3),
                                 Text(
-                                  "11:30-2:30am",
+                                 appointment['time']??"",
                                   style: TextStyle(
                                       fontSize: 9,
                                       color: const Color.fromARGB(
@@ -138,14 +166,19 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                       ),
                     ),
                     Gap(5),
-                    Container(
-                      height: 35,
-                      width: 97,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(32, 158, 158, 158),borderRadius: BorderRadius.circular(5)
-                      ),
-                      child: Center(
-                        child: Text("Call",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
+                    InkWell(
+                      onTap: (){
+                           launchUrlString("tel://${appointment['number']}");
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 97,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(32, 158, 158, 158),borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Center(
+                          child: Text("Call",style: TextStyle(fontSize: 11,fontWeight: FontWeight.w600,color:  Color(0xFF2C41FF)),),
+                        ),
                       ),
                     )
                   ],
@@ -168,7 +201,12 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                         )
           ],
         ),
+      );
+            },
+          );
+        },
       ),
     );
   }
 }
+
