@@ -93,7 +93,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
                               ),
                               Positioned(
                                   left: MediaQuery.of(context).size.width / 2 -
-                                      35,
+                                      55,
                                   top: 146,
                                   child: Text(
                                     data['name'] ?? "",

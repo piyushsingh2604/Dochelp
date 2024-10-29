@@ -104,6 +104,8 @@ class _AboutScreenState extends State<AboutScreen> {
     try {
       final userInfo = await getinfo();
       String username = userInfo?['username'] ?? 'Unknown User';
+            String address = userInfo?['location'] ?? '';
+
 
       String work = userInfo?['profession'] ?? '';
 
@@ -115,6 +117,7 @@ class _AboutScreenState extends State<AboutScreen> {
         'Profileusername': username,
         'work': work,
         'currentname':widget.currentname,
+        'address':address,
       });
 
       // Reset selections and show success message
@@ -340,7 +343,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                     width: 46,
                                     child: Center(
                                       child: Icon(
-                                        Icons.person_add_alt_outlined,
+                                        Icons.attach_money,
                                         size: 24,
                                         color: Color(0xFFC5CFDF),
                                       ),
@@ -349,7 +352,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                   Positioned(
                                       left: 58,
                                       child: Text(
-                                        "1000+",
+                                      '\$${ info['charge_per_hour']??""}',
                                         style: GoogleFonts.roboto(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w300,
@@ -359,7 +362,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                       left: 60,
                                       top: 23,
                                       child: Text(
-                                        "Patients",
+                                        "Per Hour",
                                         style: GoogleFonts.roboto(
                                             fontSize: 13,
                                             color: Colors.white,
@@ -439,7 +442,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20, top: 25),
                             child: Text(
-                              "Biography",
+                              "Shop Address",
                               style: GoogleFonts.roboto(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w400,
@@ -450,7 +453,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             padding: const EdgeInsets.only(
                                 left: 20, top: 10, right: 40),
                             child: Text(
-                              "Biography hi my name is satyam panday i am a hair dresser from mumbai my salon is in nallasopara east ",
+                              "${info['location']??""}",
                               style: GoogleFonts.roboto(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,

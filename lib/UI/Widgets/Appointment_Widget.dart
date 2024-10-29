@@ -185,7 +185,7 @@ class AppointmentWidget extends StatelessWidget {
                                 Gap(5),
                                 InkWell(
                                   onTap: () {
-                                    launchUrlString("tel://${appointment['number']}");
+    showAlertDialog(context, appointment['address'] ?? ""); // Pass the context and address
                                   },
                                   child: Container(
                                     height: 35,
@@ -196,7 +196,7 @@ class AppointmentWidget extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        "Call",
+                                        "Address",
                                         style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF2C41FF)),
                                       ),
                                     ),
@@ -226,4 +226,31 @@ class AppointmentWidget extends StatelessWidget {
       ),
     );
   }
+  void showAlertDialog(BuildContext context, String address) {
+  // Set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // Set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Shop Address"),
+    content: Text(address),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // Show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 }
