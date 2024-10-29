@@ -105,6 +105,8 @@ class _AboutScreenState extends State<AboutScreen> {
       final userInfo = await getinfo();
       String username = userInfo?['username'] ?? 'Unknown User';
             String address = userInfo?['location'] ?? '';
+         List<dynamic> imagesList = userInfo?['images'] ?? [];
+  String firstImageUrl = imagesList.isNotEmpty ? imagesList[0] : ''; // Use the first image or an empty string
 
 
       String work = userInfo?['profession'] ?? '';
@@ -118,6 +120,7 @@ class _AboutScreenState extends State<AboutScreen> {
         'work': work,
         'currentname':widget.currentname,
         'address':address,
+        'imageUrl': firstImageUrl
       });
 
       // Reset selections and show success message
@@ -296,7 +299,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                         image: NetworkImage(imageUrl),
                                         fit: BoxFit.cover,
                                       )
-                                    : null,
+                                    : DecorationImage(image: NetworkImage('https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(110)),
                           ),
                           Gap(10),

@@ -86,7 +86,7 @@ class SeeallScreen extends StatelessWidget {
                                     image: data['images'] is List
                                         ? NetworkImage(data['images'][
                                             0]) // Use the first image in the list
-                                        : NetworkImage(data['images'] ?? ''),
+                                        : NetworkImage(data['images'] ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
                                     fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(15),
                               ),

@@ -21,25 +21,24 @@ class FavScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Divider(
-              color: const Color.fromARGB(136, 158, 158, 158),
-              thickness: 1.2,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: SizedBox(
-                  height: 900,
-                  width: MediaQuery.of(context).size.width,
-                  child: FavWidget(
-                    currentname: currentname,
-                    userId: userId,
-                  )),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Divider(
+            color: const Color.fromARGB(136, 158, 158, 158),
+            thickness: 1.2,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: SizedBox(
+            
+                height: 500,
+                width: MediaQuery.of(context).size.width,
+                child: FavWidget(
+                  currentname: currentname,
+                  userId: userId,
+                )),
+          ),
+        ],
       ),
     );
   }

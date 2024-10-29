@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class AppointmentWidget extends StatelessWidget {
   final String userId; // The profile user's ID
@@ -185,7 +184,7 @@ class AppointmentWidget extends StatelessWidget {
                                 Gap(5),
                                 InkWell(
                                   onTap: () {
-    showAlertDialog(context, appointment['address'] ?? ""); // Pass the context and address
+                                    showAlertDialog(context, appointment['address'] ?? ""); // Pass the context and address
                                   },
                                   child: Container(
                                     height: 35,
@@ -211,7 +210,27 @@ class AppointmentWidget extends StatelessWidget {
                             child: Container(
                               height: 40,
                               width: 40,
-                              decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(5)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: ClipOval(
+                                child: Image.network(
+                                  appointment['imageUrl'] != null && appointment['imageUrl'] is String
+                                      ? appointment['imageUrl'] // Use the image URL directly
+                                      : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // Default fallback image URL
+                                  fit: BoxFit.cover,
+                                  height: 40,
+                                  width: 40,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.network(
+                                      'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // Fallback image on error
+                                      fit: BoxFit.cover,
+                                      height: 40,
+                                      width: 40,
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -226,31 +245,31 @@ class AppointmentWidget extends StatelessWidget {
       ),
     );
   }
+
   void showAlertDialog(BuildContext context, String address) {
-  // Set up the button
-  Widget okButton = TextButton(
-    child: Text("OK"),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
+    // Set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
 
-  // Set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Shop Address"),
-    content: Text(address),
-    actions: [
-      okButton,
-    ],
-  );
+    // Set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Shop Address"),
+      content: Text(address),
+      actions: [
+        okButton,
+      ],
+    );
 
-  // Show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
+    // Show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

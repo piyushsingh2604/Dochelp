@@ -7,6 +7,7 @@ import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vibration/vibration.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -304,7 +305,15 @@ Future<void> signUp() async {
                 right: 30,
                 top: 520,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async{
+                      bool? hasVibrator = await Vibration.hasVibrator();
+            if (hasVibrator == true) { // Check if hasVibrator is true
+              Vibration.vibrate(duration: 100); // Vibrate for 1 second
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('This device cannot vibrate')),
+              );
+            }
                     Signupbutton();
                   },
                   child: Container(

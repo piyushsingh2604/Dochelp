@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vibration/vibration.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -20,88 +21,56 @@ class _LoginState extends State<Login> {
   final TextEditingController _pass = TextEditingController();
   String email = '', pass = '';
   Signin() async {
-  if (pass.isNotEmpty) {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: pass);
+    if (pass.isNotEmpty) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: pass);
 
-      String uid = userCredential.user!.uid;
+        String uid = userCredential.user!.uid;
 
-      DocumentSnapshot userdoc =
-          await FirebaseFirestore.instance.collection('user').doc(uid).get();
+        DocumentSnapshot userdoc =
+            await FirebaseFirestore.instance.collection('user').doc(uid).get();
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Login complete")));
-
-      String username = userdoc['username'];
-      String userid = userdoc['uid'];
-      String userType = userdoc['userType'];  // Retrieve userType
-
-      // Navigate based on userType
-      if (userType == 'Worker') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WorkerBottomBar(currentId: userid,),
-          ),
-        );
-      } else if (userType == 'Client') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BottomBar(currentuid: userid, name: username),
-          ),
-        );
-      } else {
-        // Handle unexpected userType
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Invalid user type.")));
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'wrong-password') {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("The password is wrong.")));
-      } else {
-        print("An error occurred. Please try again.");
+            .showSnackBar(SnackBar(content: Text("Login complete")));
+
+        String username = userdoc['username'];
+        String userid = userdoc['uid'];
+        String userType = userdoc['userType']; // Retrieve userType
+
+        // Navigate based on userType
+        if (userType == 'Worker') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WorkerBottomBar(
+                currentId: userid,
+              ),
+            ),
+          );
+        } else if (userType == 'Client') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  BottomBar(currentuid: userid, name: username),
+            ),
+          );
+        } else {
+          // Handle unexpected userType
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Invalid user type.")));
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("The password is wrong.")));
+        } else {
+          print("An error occurred. Please try again.");
+        }
       }
     }
   }
-}
-
-
-  // Signin() async {
-  //   if (pass.isNotEmpty) {
-  //     try {
-  //       UserCredential userCredential = await FirebaseAuth.instance
-  //           .signInWithEmailAndPassword(email: email, password: pass);
-
-
-            
-
-  //       String uid = userCredential.user!.uid;
-
-  //       DocumentSnapshot userdoc =
-  //           await FirebaseFirestore.instance.collection('user').doc(uid).get();
-
-  //       ScaffoldMessenger.of(context)
-  //           .showSnackBar(SnackBar(content: Text("Login complete")));
-  //       String username = userdoc['username'];
-  //       String userid = userdoc['uid'];
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => BottomBar(currentuid: userid,name: username,)
-  //           ));
-  //     } on FirebaseAuthException catch (e) {
-  //       if (e.code == 'wrong-password') {
-  //         ScaffoldMessenger.of(context)
-  //             .showSnackBar(SnackBar(content: Text("The password is wrong.")));
-  //       } else {
-  //         print("An error occurred. Please try again.");
-  //       }
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -253,8 +222,16 @@ class _LoginState extends State<Login> {
                 right: 30,
                 top: 440,
                 child: InkWell(
-                  onTap: () {
-                    HapticFeedback.heavyImpact();
+                  onTap: () async {
+                    bool? hasVibrator = await Vibration.hasVibrator();
+                    if (hasVibrator == true) {
+                      // Check if hasVibrator is true
+                      Vibration.vibrate(duration: 100); // Vibrate for 1 second
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('This device cannot vibrate')),
+                      );
+                    }
                     loginbutton();
                   },
                   child: Container(

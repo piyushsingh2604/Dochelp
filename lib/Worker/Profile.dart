@@ -17,7 +17,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
+        appBar: AppBar(automaticallyImplyLeading: false,
           backgroundColor: Color(0xFFF42F5A),
           elevation: 0,
           centerTitle: true,

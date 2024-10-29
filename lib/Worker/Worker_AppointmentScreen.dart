@@ -14,7 +14,7 @@ class _WorkerAppointmentscreenState extends State<WorkerAppointmentscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      appBar: AppBar(automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           "Appointments",
@@ -23,22 +23,20 @@ class _WorkerAppointmentscreenState extends State<WorkerAppointmentscreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Divider(
-              color: const Color.fromARGB(136, 158, 158, 158),
-              thickness: 1.2,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: SizedBox(
-                  height: 900,
-                  width: MediaQuery.of(context).size.width,
-                  child: WorkerAppointmentWidget(userId: widget.currentid,)),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Divider(
+            color: const Color.fromARGB(136, 158, 158, 158),
+            thickness: 1.2,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: SizedBox(
+                height: 497,
+                width: MediaQuery.of(context).size.width,
+                child: WorkerAppointmentWidget(userId: widget.currentid,)),
+          ),
+        ],
       ),
     );
   }

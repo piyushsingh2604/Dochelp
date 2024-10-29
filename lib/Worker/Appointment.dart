@@ -35,7 +35,7 @@ class WorkerAppointmentWidget extends StatelessWidget {
     } else if (date.isAtSameMomentAs(tomorrow)) {
       return "Tomorrow";
     } else {
-      return "Waiting";
+      return "Up coming";
     }
   }
 
