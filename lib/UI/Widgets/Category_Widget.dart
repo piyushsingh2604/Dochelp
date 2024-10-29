@@ -135,8 +135,10 @@ class SalonListScreen extends StatelessWidget {
               final user = docs[index];
               var userid = user.id;
               var data = user.data();
-              final images = data['images'] as List<dynamic>;
-              final profileImageUrl = images.isNotEmpty ? images[0] : '';
+               final images = data['images'] is List<dynamic> ? data['images'] as List<dynamic> : [];
+  final profileImageUrl = images.isNotEmpty
+      ? images[0]
+      : 'https://cdn-icons-png.flaticon.com/512/9203/9203764.png'; // Default image URL
 
               return Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -169,13 +171,10 @@ class SalonListScreen extends StatelessWidget {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                              color: Colors.green,
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(15),
                               image: DecorationImage(
-                                image: profileImageUrl.isNotEmpty
-                                    ? NetworkImage(profileImageUrl)
-                                    : AssetImage(
-                                        'assets/default_image.png'), // Placeholder image
+                              image: NetworkImage(profileImageUrl), // Placeholder image
                                 fit: BoxFit.cover,
                               ),
                             ),

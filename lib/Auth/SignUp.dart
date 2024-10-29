@@ -1,6 +1,9 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/Auth/Login.dart';
 import 'package:dochelp/UI/Widgets/BottomBar.dart';
+import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,44 +19,67 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
-  String name = "", email = "", pass = "";
+  String name = "", email = "", pass = "", _userType = "";
+  String? selectedUserType; // This will hold either 'Worker' or 'Client'
 
-  Future<void> signUp() async {
-    if (pass.isNotEmpty) {
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: pass);
+Future<void> signUp() async {
+  if (pass.isNotEmpty) {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: pass);
 
-        String uid = userCredential.user!.uid;
+      String uid = userCredential.user!.uid;
 
-        await FirebaseFirestore.instance.collection('user').doc(uid).set({
-          'username': name,
-          'email': email,
-          'uid': uid,
-        });
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("SignUp is completed")));
+      await FirebaseFirestore.instance.collection('user').doc(uid).set({
+        'username': name,
+        'email': email,
+        'uid': uid,
+        'userType': _userType, // Store user type in Firestore
+      });
 
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("SignUp is completed")));
+
+      // Navigate based on user type
+      if (_userType == 'Worker') {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BottomBar(
-                currentuid: uid,
-                name: name,
-              ),
-            ));
-      } on FirebaseException catch (e) {
-        if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("weak password")));
-        } else if (e.code == 'email-already-in-use') {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("email already in use")));
-        } else {
-          print("An error occurred. Please try again.");
-        }
+          context,
+          MaterialPageRoute(
+            builder: (context) => WorkerBottomBar( // Assuming you have WorkerBottomBar
+            currentId: uid,
+            ),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomBar(
+              currentuid: uid,
+              name: name,
+            ),
+          ),
+        );
+      }
+    } on FirebaseException catch (e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Weak password")));
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Email already in use")));
+      } else {
+        print("An error occurred. Please try again.");
       }
     }
+  }
+}
+
+
+  void setUserType(String userType) {
+    setState(() {
+      _userType = userType;
+    });
   }
 
   @override
@@ -130,13 +156,11 @@ class _SignUpState extends State<SignUp> {
                           cursorHeight: 16,
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey), // Grey bottom border
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 2.0), // Thicker border when focused
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 2.0),
                             ),
                             contentPadding: EdgeInsets.all(0.0),
                             isDense: true,
@@ -198,19 +222,79 @@ class _SignUpState extends State<SignUp> {
                           cursorHeight: 16,
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey), // Grey bottom border
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 2.0), // Thicker border when focused
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 2.0),
                             ),
                             contentPadding: EdgeInsets.all(0.0),
                             isDense: true,
                           ),
                         ),
                       ),
+                     Positioned(
+  top: 270,
+  left: 20,  // Space on the left
+  right: 20, // Space on the right
+  child: Center(
+    child: Row(
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              setUserType('Worker');
+              setState(() {
+                selectedUserType = 'Worker'; // Set the selected user type
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10), // Remove horizontal padding
+              decoration: BoxDecoration(
+                color: selectedUserType == 'Worker' ? Color(0xFFb61636) : Colors.grey,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Center( // Center text within the button
+                child: Text(
+                  "Worker",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 10), // Space between buttons
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              setUserType('Client');
+              setState(() {
+                selectedUserType = 'Client'; // Set the selected user type
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10), // Remove horizontal padding
+              decoration: BoxDecoration(
+                color: selectedUserType == 'Client' ? Color(0xFFb61636) : Colors.grey,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Center( // Center text within the button
+                child: Text(
+                  "Client",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
+                           
                     ],
                   ),
                 ),
@@ -253,7 +337,7 @@ class _SignUpState extends State<SignUp> {
                   right: 28,
                   bottom: 50,
                   child: Text(
-                    "Don't have account?",
+                    "Don't have an account?",
                     style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
@@ -298,13 +382,16 @@ class _SignUpState extends State<SignUp> {
     } else if (value.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Enter Password")));
+    } else if (_userType.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Select user type")));
     } else {
       setState(() {
         email = _email.text;
         pass = _pass.text;
         name = _name.text;
       });
+      signUp();
     }
-    signUp();
   }
 }

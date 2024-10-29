@@ -246,7 +246,8 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchUserData();
   }
 
-  Future<void> fetchUserData() async {
+ Future<void> fetchUserData() async {
+  try {
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
         .collection('user')
         .doc(widget.uid)
@@ -254,13 +255,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (userDoc.exists) {
       setState(() {
-        List<dynamic> images = userDoc['images'] ?? [];
+        List<dynamic> images = userDoc['images'] ?? [''];
         imageUrl = images.isNotEmpty ? images[0] : null;
       });
     } else {
       print("User document does not exist");
+      // Handle case where document doesn't exist, maybe show an error message
     }
+  } catch (e) {
+    print("Error fetching user data: $e");
+    // Handle error, possibly show a dialog to the user
   }
+}
 
   Future<List<Map<String, dynamic>>> fetchUsernames(String query) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -335,23 +341,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         );
                       },
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(60),
-                          image: imageUrl != null
-                              ? DecorationImage(
-                                  image: NetworkImage(imageUrl!),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                        ),
-                        child: imageUrl == null
-                            ? Center(child: CircularProgressIndicator())
-                            : null,
-                      ),
+child: Container(
+  height: 60,
+  width: 60,
+  decoration: BoxDecoration(
+    color: Colors.transparent,
+    borderRadius: BorderRadius.circular(60),
+    image: imageUrl != null
+        ? DecorationImage(
+            image: NetworkImage(imageUrl!),
+            fit: BoxFit.cover,
+          )
+        : DecorationImage(
+            image: NetworkImage("https://cdn-icons-png.flaticon.com/512/3135/3135715.png"),
+            fit: BoxFit.cover,
+          ),
+  ),
+),
+
                     ),
                   ),
                   Positioned(
