@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WorkerBottomBar extends StatefulWidget {
 String currentId;
-WorkerBottomBar({
+WorkerBottomBar({super.key, 
   required this.currentId
 });
   @override

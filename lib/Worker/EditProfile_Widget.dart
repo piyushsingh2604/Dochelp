@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 class EditProfileWidget extends StatefulWidget {
   String name;
   String gmail;
-  EditProfileWidget({required this.name, required this.gmail});
+  EditProfileWidget({super.key, required this.name, required this.gmail});
   @override
   _EditProfileWidgetState createState() => _EditProfileWidgetState();
 }

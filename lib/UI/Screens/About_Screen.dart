@@ -6,12 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutScreen extends StatefulWidget {
+  String currentname;
   String userId;
   String userInfo;
   AboutScreen({
     super.key,
     required this.userId,
     required this.userInfo,
+    required this.currentname,
   });
   @override
   State<AboutScreen> createState() => _AboutScreenState();
@@ -39,11 +41,11 @@ class _AboutScreenState extends State<AboutScreen> {
     });
   }
 
- void _generateSelectableTimes() {
-  selectableTimes = List.generate(14, (index) {
-    return DateFormat.jm().format(DateTime(0, 0, 0, index + 10));
-  });
-}
+  void _generateSelectableTimes() {
+    selectableTimes = List.generate(14, (index) {
+      return DateFormat.jm().format(DateTime(0, 0, 0, index + 10));
+    });
+  }
 
   Future<void> _checkTimeAvailability(String time) async {
     if (selectedDate == null) return;
@@ -93,42 +95,42 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   void _submitBooking() async {
-  if (selectedDate == null || selectedTime == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select both date and time.')));
-    return;
+    if (selectedDate == null || selectedTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please select both date and time.')));
+      return;
+    }
+
+    try {
+      final userInfo = await getinfo();
+      String username = userInfo?['username'] ?? 'Unknown User';
+
+      String work = userInfo?['profession'] ?? '';
+
+      await FirebaseFirestore.instance.collection('appointments').add({
+        'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
+        'time': selectedTime,
+        'userId': widget.userId,
+        'profileUserId': widget.userInfo,
+        'Profileusername': username,
+        'work': work,
+        'currentname':widget.currentname,
+      });
+
+      // Reset selections and show success message
+      setState(() {
+        selectedDate = null;
+        selectedTime = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Appointment booked successfully!')));
+    } catch (e) {
+      print("Failed to add appointment: $e");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Failed to book appointment.')));
+    }
   }
-
-  try {
-    final userInfo = await getinfo();
-    String username = userInfo?['username'] ?? 'Unknown User';
-    
-    String work = userInfo?['profession'] ?? ''; 
-
-    await FirebaseFirestore.instance.collection('appointments').add({
-      'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
-      'time': selectedTime,
-      'userId': widget.userId,
-      'profileUserId': widget.userInfo,
-      'Profileusername': username, 
-      'work': work,
-    });
-
-    // Reset selections and show success message
-    setState(() {
-      selectedDate = null;
-      selectedTime = null;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Appointment booked successfully!')));
-  } catch (e) {
-    print("Failed to add appointment: $e");
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Failed to book appointment.')));
-  }
-}
-
 
   Future<Map<String, dynamic>?> getinfo() async {
     DocumentSnapshot userdoc = await FirebaseFirestore.instance
@@ -676,13 +678,3 @@ class _AboutScreenState extends State<AboutScreen> {
     ));
   }
 }
-
-
-
-
-
-
-
-
-
-

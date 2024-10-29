@@ -9,7 +9,7 @@ import 'package:gap/gap.dart';
 class WorkerAppointmentWidget extends StatelessWidget {
   final String userId; // The profile user's ID
 
-  WorkerAppointmentWidget({super.key, required this.userId});
+  const WorkerAppointmentWidget({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class WorkerAppointmentWidget extends StatelessWidget {
                   top: 15,
                   left: 18,
                   child: Text(
-                   appointment['Profileusername']??"",
+                   appointment['currentname']??"",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,

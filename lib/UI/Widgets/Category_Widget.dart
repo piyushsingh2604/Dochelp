@@ -5,8 +5,9 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatelessWidget {
+  String currentname;
   String uid;
-  CategoryWidget({super.key, required this.uid});
+  CategoryWidget({super.key, required this.uid, required this.currentname});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class CategoryWidget extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => SalonListScreen(
               uid: uid,
-              profession: profession,
+              profession: profession, currentname: currentname,
             ),
           ),
         );
@@ -97,11 +98,13 @@ class CategoryWidget extends StatelessWidget {
 class SalonListScreen extends StatelessWidget {
   final String profession;
   final String uid;
+  final String currentname;
 
   const SalonListScreen({
     super.key,
     required this.profession,
     required this.uid,
+    required this.currentname
   });
 
   @override
@@ -143,6 +146,7 @@ class SalonListScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AboutScreen(
+                          currentname: currentname,
                           userId: uid,
                           userInfo: userid,
                         ),

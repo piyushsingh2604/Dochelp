@@ -1,17 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/UI/Screens/About_Screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TopworkesWidget extends StatelessWidget {
+class SeeallScreen extends StatelessWidget {
   String currentname;
   String userId;
-  TopworkesWidget({super.key, required this.userId,required this.currentname});
+  SeeallScreen({
+    required this.currentname,
+    required this.userId,
+  });
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
+    return Scaffold(      backgroundColor: Color(0xFFF7F8F9),
+
+      appBar: AppBar(      backgroundColor: Color(0xFFF7F8F9),
+
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new_rounded)),
+            title: Text("All Workers"),
+            centerTitle: true,
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('user').snapshots(),
         builder: (context, snapshot) {
@@ -21,11 +35,10 @@ class TopworkesWidget extends StatelessWidget {
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text("Error ${snapshot.error}"),
+              child: Text("error ${snapshot.hasError}"),
             );
           } else if (snapshot.hasData) {
             final docs = snapshot.data!.docs;
-            // Filter out users with an empty profession
             final filteredDocs = docs.where((doc) {
               var data = doc.data();
               return data['profession'] != null &&
@@ -33,14 +46,13 @@ class TopworkesWidget extends StatelessWidget {
             }).toList();
 
             return ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
               itemCount: filteredDocs.length,
               itemBuilder: (context, index) {
                 var data = filteredDocs[index].data();
-                final users = docs[index];
                 var useruid = filteredDocs[index].id;
+
                 return Padding(
-                  padding: const EdgeInsets.only(top: 6),
+                  padding: const EdgeInsets.only(top: 6, left: 20, right: 20),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(

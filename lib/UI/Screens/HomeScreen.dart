@@ -218,6 +218,7 @@
 // }
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/UI/Screens/About_Screen.dart';
+import 'package:dochelp/UI/Screens/SeeAll_Screen.dart';
 import 'package:dochelp/UI/Widgets/Category_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
@@ -280,8 +281,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            AboutScreen(userId: widget.uid, userInfo: userId),
+        builder: (context) => AboutScreen(
+          userId: widget.uid,
+          userInfo: userId,
+          currentname: widget.name,
+        ),
       ),
     );
   }
@@ -422,6 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 73,
                       width: MediaQuery.of(context).size.width,
                       child: CategoryWidget(
+                        currentname: widget.name,
                         uid: widget.uid,
                       ),
                     ),
@@ -440,7 +445,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 19, fontWeight: FontWeight.w600),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SeeallScreen(
+                                currentname: widget.name, userId: widget.uid),
+                          ));
+                    },
                     child: Text(
                       "See All",
                       style: TextStyle(
@@ -458,6 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: TopworkesWidget(
+                  currentname: widget.name,
                   userId: widget.uid,
                 ),
               ),

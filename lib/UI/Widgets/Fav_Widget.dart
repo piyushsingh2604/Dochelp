@@ -7,8 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 class FavWidget extends StatefulWidget {
   // Change to StatefulWidget
   final String userId;
+  String currentname;
 
-  FavWidget({Key? key, required this.userId}) : super(key: key);
+   FavWidget({super.key, required this.userId,required this.currentname});
 
   @override
   _FavWidgetState createState() => _FavWidgetState();
@@ -85,6 +86,7 @@ class _FavWidgetState extends State<FavWidget> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AboutScreen(
+                        currentname: widget.currentname,
                           userInfo: favorite['id'], userId: widget.userId),
                     ),
                   );
