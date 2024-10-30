@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/main.dart';
 import 'package:flutter/material.dart';
@@ -562,7 +561,6 @@ class _AboutScreenState extends State<AboutScreen> {
                               ),
                             ),
                           ),
-                        
                           Padding(
                             padding: const EdgeInsets.only(left: 20, top: 16),
                             child: Text(
@@ -675,57 +673,62 @@ class _AboutScreenState extends State<AboutScreen> {
                                 ),
                               ],
                             ),
-                          ),                        Gap(30),
-
-                         StarRating(
+                          ),
+                          Gap(30),
+                          StarRating(
                             rating: rating,
                             onRatingSelected: (newRating) {
                               setState(() {
                                 rating = newRating; // Update the rating value
                               });
                             },
-                          ),  Padding(
-                            padding: const EdgeInsets.only(left: 25,right: 25,top: 20),
-                            child: Expanded(
-                                    child: GestureDetector(
-                                      onTap: ()async{
-                                         if (rating > 0) {
-                                  await rateUser(widget.userInfo, rating);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Rated $rating stars')),
-                                  );
-                                  setState(() {
-                                    rating = 0; // Reset rating after submission
-                                  });
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Please select a rating')),
-                                  );
-                                }
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFF1B4083),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "Submit Rating",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 25, right: 25, top: 20),
+                            child: Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              child: InkWell(
+                                onTap: () async {
+                                  if (rating > 0) {
+                                    await rateUser(widget.userInfo, rating);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text('Rated $rating stars')),
+                                    );
+                                    setState(() {
+                                      rating =
+                                          0; // Reset rating after submission
+                                    });
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text('Please select a rating')),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF1B4083),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Submit Rating",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17,
                                       ),
                                     ),
                                   ),
+                                ),
+                              ),
+                            ),
                           ),
-                        
                         ],
                       ),
                     ),
@@ -743,54 +746,55 @@ class _AboutScreenState extends State<AboutScreen> {
     ));
   }
 
-Future<void> rateUser(String ratedUserId, double rating) async {
-  final firestore = FirebaseFirestore.instance;
-  String currentUserId = widget.userId;
+  Future<void> rateUser(String ratedUserId, double rating) async {
+    final firestore = FirebaseFirestore.instance;
+    String currentUserId = widget.userId;
 
-  // Check if the user has already rated
-  final existingRatingSnapshot = await firestore.collection('ratings')
-      .where('ratedUserId', isEqualTo: ratedUserId)
-      .where('userId', isEqualTo: currentUserId)
-      .get();
+    // Check if the user has already rated
+    final existingRatingSnapshot = await firestore
+        .collection('ratings')
+        .where('ratedUserId', isEqualTo: ratedUserId)
+        .where('userId', isEqualTo: currentUserId)
+        .get();
 
-  // If the user has already rated, show the alert dialog and return
-  if (existingRatingSnapshot.docs.isNotEmpty) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Rating Submission'),
-          content: Text('You have already rated this user.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return; // Exit the function to prevent further execution
+    // If the user has already rated, show the alert dialog and return
+    if (existingRatingSnapshot.docs.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Rating Submission'),
+            content: Text('You have already rated this user.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return; // Exit the function to prevent further execution
+    }
+
+    // Proceed to add the rating if not already rated
+    await firestore.collection('ratings').add({
+      'ratedUserId': ratedUserId,
+      'userId': currentUserId,
+      'rating': rating,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Calculate the average rating
+    await calculateAverageRating(ratedUserId);
+
+    // Show SnackBar only if rating submission is successful
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text('Rated $rating stars')),
+    // );
   }
-
-  // Proceed to add the rating if not already rated
-  await firestore.collection('ratings').add({
-    'ratedUserId': ratedUserId,
-    'userId': currentUserId,
-    'rating': rating,
-    'timestamp': FieldValue.serverTimestamp(),
-  });
-
-  // Calculate the average rating
-  await calculateAverageRating(ratedUserId);
-
-  // Show SnackBar only if rating submission is successful
-  // ScaffoldMessenger.of(context).showSnackBar(
-  //   SnackBar(content: Text('Rated $rating stars')),
-  // );
-}
 
   Future<void> calculateAverageRating(String userId) async {
     final firestore = FirebaseFirestore.instance;
@@ -822,7 +826,8 @@ class StarRating extends StatelessWidget {
   final double rating;
   final Function(double) onRatingSelected;
 
-  const StarRating({super.key, required this.rating, required this.onRatingSelected});
+  const StarRating(
+      {super.key, required this.rating, required this.onRatingSelected});
 
   @override
   Widget build(BuildContext context) {
