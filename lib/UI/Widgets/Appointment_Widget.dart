@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class AppointmentWidget extends StatelessWidget {
   final String userId; // The profile user's ID
 
-  AppointmentWidget({super.key, required this.userId});
+  const AppointmentWidget({super.key, required this.userId});
 
   DateTime? parseDate(String dateString) {
     try {

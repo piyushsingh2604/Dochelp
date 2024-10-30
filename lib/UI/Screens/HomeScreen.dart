@@ -5,7 +5,6 @@ import 'package:dochelp/UI/Screens/SeeAll_Screen.dart';
 import 'package:dochelp/UI/Widgets/Category_Widget.dart';
 import 'package:dochelp/UI/Widgets/Swiper_Widget.dart';
 import 'package:dochelp/UI/Widgets/TopWorkes_Widget.dart';
-import 'package:dochelp/Worker/BottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -170,22 +170,14 @@ class _FavWidgetState extends State<FavWidget> {
                               ),
                               Gap(4),
                               Text(
-                                favorite['rating']?.toString() ?? '0',
+                                favorite['averageRating']?.toString() ?? '1',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w100,
                                 ),
                               ),
-                              Gap(1),
-                              Text(
-                                "(${favorite['reviewsCount'] ?? 0} Reviews)",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w100,
-                                ),
-                              ),
+                             
                             ],
                           ),
                         ),

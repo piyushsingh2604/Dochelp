@@ -223,7 +223,7 @@ class SalonListScreen extends StatelessWidget {
                                 ),
                                 Gap(4),
                                 Text(
-                                  "4.9",
+                                 '${data['averageRating'] ?? "1"}',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 13,

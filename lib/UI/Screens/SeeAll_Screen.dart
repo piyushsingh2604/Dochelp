@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/UI/Screens/About_Screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class SeeallScreen extends StatelessWidget {
   String currentname;
   String userId;
-  SeeallScreen({
+  SeeallScreen({super.key, 
     required this.currentname,
     required this.userId,
   });

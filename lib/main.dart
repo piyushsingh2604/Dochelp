@@ -1,11 +1,9 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dochelp/Auth/Login.dart';
 import 'package:dochelp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,4 +28,3 @@ class MyApp extends StatelessWidget {
 
 // https://mir-s3-cdn-cf.behance.net/project_modules/1400/89413d141786591.625a8fc55babb.jpg
 
- 

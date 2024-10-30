@@ -1,4 +1,6 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dochelp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +22,8 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+  double rating = 0.0; // Current rating value
+
   DateTime currentDate = DateTime.now();
   DateTime? selectedDate;
   List<DateTime> selectableDates = [];
@@ -104,10 +108,11 @@ class _AboutScreenState extends State<AboutScreen> {
     try {
       final userInfo = await getinfo();
       String username = userInfo?['username'] ?? 'Unknown User';
-            String address = userInfo?['location'] ?? '';
-         List<dynamic> imagesList = userInfo?['images'] ?? [];
-  String firstImageUrl = imagesList.isNotEmpty ? imagesList[0] : ''; // Use the first image or an empty string
-
+      String address = userInfo?['location'] ?? '';
+      List<dynamic> imagesList = userInfo?['images'] ?? [];
+      String firstImageUrl = imagesList.isNotEmpty
+          ? imagesList[0]
+          : ''; // Use the first image or an empty string
 
       String work = userInfo?['profession'] ?? '';
 
@@ -118,8 +123,8 @@ class _AboutScreenState extends State<AboutScreen> {
         'profileUserId': widget.userInfo,
         'Profileusername': username,
         'work': work,
-        'currentname':widget.currentname,
-        'address':address,
+        'currentname': widget.currentname,
+        'address': address,
         'imageUrl': firstImageUrl
       });
 
@@ -222,7 +227,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   end: Alignment.centerRight,
                 ),
               ),
-              height: 850,
+              height: 1050,
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
@@ -299,7 +304,10 @@ class _AboutScreenState extends State<AboutScreen> {
                                         image: NetworkImage(imageUrl),
                                         fit: BoxFit.cover,
                                       )
-                                    : DecorationImage(image: NetworkImage('https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),fit: BoxFit.cover),
+                                    : DecorationImage(
+                                        image: NetworkImage(
+                                            'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
+                                        fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(110)),
                           ),
                           Gap(10),
@@ -355,7 +363,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                   Positioned(
                                       left: 58,
                                       child: Text(
-                                      '\$${ info['charge_per_hour']??""}',
+                                        '\$${info['charge_per_hour'] ?? ""}',
                                         style: GoogleFonts.roboto(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w300,
@@ -437,7 +445,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20))),
-                      height: 900,
+                      height: 1000,
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -456,7 +464,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             padding: const EdgeInsets.only(
                                 left: 20, top: 10, right: 40),
                             child: Text(
-                              "${info['location']??""}",
+                              "${info['location'] ?? ""}",
                               style: GoogleFonts.roboto(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -554,6 +562,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               ),
                             ),
                           ),
+                        
                           Padding(
                             padding: const EdgeInsets.only(left: 20, top: 16),
                             child: Text(
@@ -666,7 +675,57 @@ class _AboutScreenState extends State<AboutScreen> {
                                 ),
                               ],
                             ),
+                          ),                        Gap(30),
+
+                         StarRating(
+                            rating: rating,
+                            onRatingSelected: (newRating) {
+                              setState(() {
+                                rating = newRating; // Update the rating value
+                              });
+                            },
+                          ),  Padding(
+                            padding: const EdgeInsets.only(left: 25,right: 25,top: 20),
+                            child: Expanded(
+                                    child: GestureDetector(
+                                      onTap: ()async{
+                                         if (rating > 0) {
+                                  await rateUser(widget.userInfo, rating);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Rated $rating stars')),
+                                  );
+                                  setState(() {
+                                    rating = 0; // Reset rating after submission
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Please select a rating')),
+                                  );
+                                }
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF1B4083),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Submit Rating",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                           ),
+                        
                         ],
                       ),
                     ),
@@ -682,5 +741,104 @@ class _AboutScreenState extends State<AboutScreen> {
         }
       },
     ));
+  }
+
+Future<void> rateUser(String ratedUserId, double rating) async {
+  final firestore = FirebaseFirestore.instance;
+  String currentUserId = widget.userId;
+
+  // Check if the user has already rated
+  final existingRatingSnapshot = await firestore.collection('ratings')
+      .where('ratedUserId', isEqualTo: ratedUserId)
+      .where('userId', isEqualTo: currentUserId)
+      .get();
+
+  // If the user has already rated, show the alert dialog and return
+  if (existingRatingSnapshot.docs.isNotEmpty) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Rating Submission'),
+          content: Text('You have already rated this user.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return; // Exit the function to prevent further execution
+  }
+
+  // Proceed to add the rating if not already rated
+  await firestore.collection('ratings').add({
+    'ratedUserId': ratedUserId,
+    'userId': currentUserId,
+    'rating': rating,
+    'timestamp': FieldValue.serverTimestamp(),
+  });
+
+  // Calculate the average rating
+  await calculateAverageRating(ratedUserId);
+
+  // Show SnackBar only if rating submission is successful
+  // ScaffoldMessenger.of(context).showSnackBar(
+  //   SnackBar(content: Text('Rated $rating stars')),
+  // );
+}
+
+  Future<void> calculateAverageRating(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get all ratings for the user
+    final snapshot = await firestore
+        .collection('ratings')
+        .where('ratedUserId', isEqualTo: userId)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      double totalRating = 0.0;
+
+      for (var doc in snapshot.docs) {
+        totalRating += doc.data()['rating'] as double;
+      }
+
+      double averageRating = totalRating / snapshot.docs.length;
+
+      // Update the user's average rating in the user collection
+      await firestore.collection('user').doc(userId).set({
+        'averageRating': averageRating,
+      }, SetOptions(merge: true));
+    }
+  }
+}
+
+class StarRating extends StatelessWidget {
+  final double rating;
+  final Function(double) onRatingSelected;
+
+  const StarRating({super.key, required this.rating, required this.onRatingSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (index) {
+        return IconButton(
+          icon: Icon(
+            index < rating ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+          ),
+          onPressed: () {
+            onRatingSelected(index + 1.0);
+          },
+        );
+      }),
+    );
   }
 }

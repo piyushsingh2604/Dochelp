@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Appointmentscreen extends StatefulWidget {
   String currentid;
 
-  Appointmentscreen({required this.currentid});
+  Appointmentscreen({super.key, required this.currentid});
 
   @override
   State<Appointmentscreen> createState() => _AppointmentscreenState();

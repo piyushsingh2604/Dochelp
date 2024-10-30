@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class TopworkesWidget extends StatelessWidget {
   String currentname;
   String userId;
-  TopworkesWidget({super.key, required this.userId,required this.currentname});
+  TopworkesWidget({super.key, required this.userId, required this.currentname});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +74,8 @@ class TopworkesWidget extends StatelessWidget {
                                     image: data['images'] is List
                                         ? NetworkImage(data['images'][
                                             0]) // Use the first image in the list
-                                        : NetworkImage(data['images'] ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
+                                        : NetworkImage(data['images'] ??
+                                            'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
                                     fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -123,7 +124,7 @@ class TopworkesWidget extends StatelessWidget {
                                   ),
                                   Gap(4),
                                   Text(
-                                    "4.9",
+                                    '${data['averageRating'] ?? "1"}',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 13,
