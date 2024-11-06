@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dochelp/UI/Screens/AddMoney.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -179,24 +180,86 @@ class _ProfilescreenState extends State<Profilescreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 35),
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Profile",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 19,
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Container(
+                            height: 55,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Profile",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                 Positioned(
+                                  right: 15,
+                                   child: InkWell(
+                                           onTap: () {
+                                             Navigator.push(
+                                                 context,
+                                                 MaterialPageRoute(
+                                                   builder: (context) => Addmoney(),
+                                                 ));
+                                           },
+                                           child: Container(
+                                             child: Stack(
+                                               children: [
+                                                 Positioned(
+                                                     top: 2,
+                                                     left: 15,
+                                                     child: Text(
+                                                       '\u{20B9}',
+                                                       style: TextStyle(
+                                                           color: Colors.black54,
+                                                           fontSize: 30,
+                                                           fontWeight: FontWeight.w500),
+                                                     )),
+                                                 Positioned(
+                                                     top: 5,
+                                                     left: 40,
+                                                     child: Text(
+                                                       "Balance",
+                                                       style: TextStyle(
+                                                           color: Colors.black,
+                                                           fontWeight: FontWeight.w500,
+                                                           fontSize: 10),
+                                                     )),
+                                                 Positioned(
+                                                     left: 39.4,
+                                                     top: 16.7,
+                                                     child: Text(
+                                                       "2,000",
+                                                       style: TextStyle(
+                                                           color: Colors.black54,
+                                                           fontWeight: FontWeight.w500,
+                                                           fontSize: 14),
+                                                     ))
+                                               ],
+                                             ),
+                                             height: 44,
+                                             width: 110,
+                                             decoration: BoxDecoration(
+                                                 boxShadow: [
+                                                   BoxShadow(
+                                                       color: const Color.fromARGB(40, 158, 158, 158),
+                                                       spreadRadius: 3,
+                                                       blurRadius: 2)
+                                                 ],
+                                                 color: Colors.white,
+                                                 borderRadius: BorderRadius.circular(30)),
+                                           ),
+                                         ),
+                                 ),
+                              ],
+                            ),
                           ),
                         ),
-                        Gap(20),
+                        Gap(15),
                         SizedBox(
                           height: 100,
                           width: 110,

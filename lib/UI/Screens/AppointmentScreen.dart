@@ -34,7 +34,7 @@ class _AppointmentscreenState extends State<Appointmentscreen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
             child: SizedBox(
-                height: 530,
+                height: 524,
                 width: MediaQuery.of(context).size.width,
                 child: AppointmentWidget(
                   userId: widget.currentid,

@@ -686,7 +686,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 25, right: 25, top: 20),
-                            child: Container(
+                            child: SizedBox(
                               height: 50,
                               width: MediaQuery.of(context).size.width,
                               child: InkWell(

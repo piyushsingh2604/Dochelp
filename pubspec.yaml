@@ -54,6 +54,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_typeahead: ^5.2.0
   vibration: ^2.0.1
+  pin_plus_keyboard: ^2.0.6
   
 
 dev_dependencies:
