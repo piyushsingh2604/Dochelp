@@ -148,7 +148,36 @@ class _ProfilescreenState extends State<Profilescreen> {
   }
 }
 
+  String balance = '0';  // Default balance is '0'
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchBalance();  // Fetch the balance when the screen is initialized
+  }
+
+  // Fetch current balance from Firestore
+  Future<void> _fetchBalance() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        // Fetch the user's document from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+
+        if (userDoc.exists) {
+          // Get the balance from the document (assuming it's stored as 'balance')
+          var userBalance = userDoc['balance'];
+          setState(() {
+            balance = userBalance != null ? userBalance.toString() : '0';
+          });
+        }
+      } catch (e) {
+        // Handle any errors that occur during fetching
+        print("Error fetching balance: $e");
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,7 +210,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 15),
-                          child: Container(
+                          child: SizedBox(
                             height: 55,
                             child: Stack(
                               children: [
@@ -207,6 +236,17 @@ class _ProfilescreenState extends State<Profilescreen> {
                                                  ));
                                            },
                                            child: Container(
+                                             height: 44,
+                                             width: 110,
+                                             decoration: BoxDecoration(
+                                                 boxShadow: [
+                                                   BoxShadow(
+                                                       color: const Color.fromARGB(40, 158, 158, 158),
+                                                       spreadRadius: 3,
+                                                       blurRadius: 2)
+                                                 ],
+                                                 color: Colors.white,
+                                                 borderRadius: BorderRadius.circular(30)),
                                              child: Stack(
                                                children: [
                                                  Positioned(
@@ -233,7 +273,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                                                      left: 39.4,
                                                      top: 16.7,
                                                      child: Text(
-                                                       "2,000",
+                                                       balance,
                                                        style: TextStyle(
                                                            color: Colors.black54,
                                                            fontWeight: FontWeight.w500,
@@ -241,17 +281,6 @@ class _ProfilescreenState extends State<Profilescreen> {
                                                      ))
                                                ],
                                              ),
-                                             height: 44,
-                                             width: 110,
-                                             decoration: BoxDecoration(
-                                                 boxShadow: [
-                                                   BoxShadow(
-                                                       color: const Color.fromARGB(40, 158, 158, 158),
-                                                       spreadRadius: 3,
-                                                       blurRadius: 2)
-                                                 ],
-                                                 color: Colors.white,
-                                                 borderRadius: BorderRadius.circular(30)),
                                            ),
                                          ),
                                  ),

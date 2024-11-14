@@ -26,6 +26,17 @@ class _AmountWidgetState extends State<AmountWidget> {
               ));
         },
         child: Container(
+          height: 46,
+          width: 110,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: const Color.fromARGB(40, 158, 158, 158),
+                    spreadRadius: 3,
+                    blurRadius: 2)
+              ],
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30)),
           child: Stack(
             children: [
               Positioned(
@@ -60,17 +71,6 @@ class _AmountWidgetState extends State<AmountWidget> {
                   ))
             ],
           ),
-          height: 46,
-          width: 110,
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: const Color.fromARGB(40, 158, 158, 158),
-                    spreadRadius: 3,
-                    blurRadius: 2)
-              ],
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30)),
         ),
       ),
     );
